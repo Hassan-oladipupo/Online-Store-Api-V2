@@ -1,14 +1,15 @@
-const User = require('../database/models/userModel');
+const User = require('../models/userModel');
 const constants = require('../constants');
 const mongoDbDataFormat = require('../helper/dbHelper');
  const bcrypt = require('bcrypt');
  const jwt = require('jsonwebtoken');
  const validator = require("validator");
+ const accessControlValidation = require('../middleware/accessControlValidation')
 
 
  
   
-  module.exports.signup = async ({ email, password, firstName, lastName }) => {
+  module.exports.register = async ({ email, password, firstName, lastName, userRoles }) => {
     try {
       if (!validator.isEmail(email)) {
         throw new Error(constants.userMessage.INVALID_EMAIL);
@@ -19,13 +20,13 @@ const mongoDbDataFormat = require('../helper/dbHelper');
         throw new Error(constants.userMessage.DUPLICATE_EMAIL);
       }
   
-      if (!mongoDbDataFormat.isStrongPassword(password)) {
+      if (!accessControlValidation.isValidPassword(password)) {
         throw new Error(constants.userMessage.WEAK_PASSWORD);
       }
   
       password = await bcrypt.hash(password, 12);
   
-      const newUser = new User({ email, password, firstName, lastName });
+      const newUser = new User({ email, password, firstName, lastName, userRoles });
       let result = await newUser.save();
       return mongoDbDataFormat.formatMongoData(result);
     } catch (error) {

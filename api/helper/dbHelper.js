@@ -19,17 +19,3 @@ module.exports.checkObjectId = (id) => {
 }
 
 
-module.exports.isStrongPassword = (password) => {
-
-  const minLength = 8;
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasDigits = /\d/.test(password);
-
-  return (
-    password.length >= minLength &&
-    hasUpperCase &&
-    hasLowerCase &&
-    hasDigits
-  );
-};

@@ -1,16 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const productController = require('../Controller/productController')
+const productController = require('../Controller/productController');
 const joiSchemaValidation = require('../middleware/joiSchemaValidation');
 const productSchema = require('../apiSchema/productSchema');
-const upload = require('../middleware/uploadsImage')
+const uploadsImageValidation = require('../middleware/uploadsImageValidation');
+const accessControlValidation = require('../middleware/accessControlValidation');
+
+router.post('/',
+    accessControlValidation.validateToken,
+    accessControlValidation.isAdmin,
+    uploadsImageValidation.single('imageUrl'), 
+    joiSchemaValidation.validateBody(productSchema.createProductSchema),
+    productController.createProduct
+  );
 
 
-router.post('/', 
-joiSchemaValidation.validateBody(productSchema.createProductSchema),
-productController.createProduct,
-  upload
-);
+
+
+
 
 
 router.get('/',
@@ -23,11 +30,15 @@ router.get('/:id',
   );
 
   router.put('/:id',
+    accessControlValidation.validateToken,
+    accessControlValidation.isAdmin,
     joiSchemaValidation.validateBody(productSchema.updateExitingProductSchema),
     productController.updateExitingProduct
   );
 
   router.delete('/:id',
+    accessControlValidation.validateToken,
+    accessControlValidation.isAdmin,
     productController.removeProduct
   )
 

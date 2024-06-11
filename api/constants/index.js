@@ -29,7 +29,8 @@ module.exports = {
   },
   requestValidationMessage: {
     BAD_REQUEST: 'Invalid fields',
-    TOKEN_MISSING: 'Token missing from header'
+    TOKEN_MISSING: 'Token missing from header',
+    FORBIDDEN: 'Access denied. Admins only.',
   },
   databaseMessage: {
     INVALID_ID: 'Invalid Id'

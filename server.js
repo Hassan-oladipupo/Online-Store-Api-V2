@@ -16,9 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 
-// Routes
 app.use('/api/v2/products', require('./api/routes/productRoute'));
 app.use('/api/v2/orders', require('./api/routes/orderRoute'));
+app.use('/api/v2/users', require('./api/routes/userRoute'));
 
 app.get('/', (req, res) => {
   res.send('RestApi For Online Shopping Stores');
@@ -30,7 +30,6 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-// 404 Middleware - Catch all unmatched routes
 app.use((req, res, next) => {
   const error = new Error('Not found');
   error.status = 404;

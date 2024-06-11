@@ -7,6 +7,7 @@ const orderSchema = new mongoose.Schema({
   orderDate: Date,
   phoneNumber: Number,
   deliveryAddress: String,
+  orderNote: String,
   products: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'

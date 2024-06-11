@@ -4,7 +4,8 @@ const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   firstName: String,
-  lastName: String
+  lastName: String,
+  userRoles: String
 }, {
     timestamps: true,
     toObject: {
