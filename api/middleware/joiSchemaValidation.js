@@ -21,7 +21,7 @@ const validateObjectSchema = (data, schema) => {
 
 module.exports.validateBody = (schema) => {
   return (req, res, next) => {
-    let response = { ...constants.defaultServerResponse };
+    let response = { ...constants.customServerResponse };
     const error = validateObjectSchema(req.body, schema);
     if (error) {
       response.body = error;
@@ -35,7 +35,7 @@ module.exports.validateBody = (schema) => {
 
 module.exports.validateQueryParams = (schema) => {
   return (req, res, next) => {
-    let response = { ...constants.defaultServerResponse };
+    let response = { ...constants.customServerResponse };
     const error = validateObjectSchema(req.query, schema);
     if (error) {
       response.body = error;

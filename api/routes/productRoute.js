@@ -3,11 +3,13 @@ const router = express.Router();
 const productController = require('../Controller/productController')
 const joiSchemaValidation = require('../middleware/joiSchemaValidation');
 const productSchema = require('../apiSchema/productSchema');
+const upload = require('../middleware/uploadsImage')
 
 
 router.post('/', 
 joiSchemaValidation.validateBody(productSchema.createProductSchema),
-productController.createProduct
+productController.createProduct,
+  upload
 );
 
 

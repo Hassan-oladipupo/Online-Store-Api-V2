@@ -9,7 +9,8 @@ module.exports = {
     PRODUCT_FETCHED: 'Product Fetched Successfully',
     PRODUCT_UPDATED: 'Product Updated Successfully',
     PRODUCT_REMOVED: 'Product Removed Successfully',
-    PRODUCT_NOT_FOUND: 'Product Not Found'
+    PRODUCT_NOT_FOUND: 'Product Not Found',
+    EMPTY_PRODUCT: 'No Product Found'
   },
   orderMessage: {
     Order_CREATED: 'Order Placed Successfully',
