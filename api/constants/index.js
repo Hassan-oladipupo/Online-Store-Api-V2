@@ -24,7 +24,8 @@ module.exports = {
     DUPLICATE_EMAIL: 'User already exist with given email',
     USER_NOT_FOUND: 'User not found',
     INVALID_PASSWORD: 'Incorrect Password',
-    INVALID_EMAIL: 'Invalid email format' 
+    INVALID_EMAIL: 'Invalid email format',
+    WEAK_PASSWORD: 'Weak password. Password must contain at least 8 characters including uppercase, lowercase and digit',
   },
   requestValidationMessage: {
     BAD_REQUEST: 'Invalid fields',

@@ -17,3 +17,19 @@ module.exports.checkObjectId = (id) => {
     throw new Error(constants.databaseMessage.INVALID_ID);
   }
 }
+
+
+module.exports.isStrongPassword = (password) => {
+
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasDigits = /\d/.test(password);
+
+  return (
+    password.length >= minLength &&
+    hasUpperCase &&
+    hasLowerCase &&
+    hasDigits
+  );
+};
