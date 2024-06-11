@@ -8,12 +8,12 @@ module.exports.createProductSchema = Joi.object().keys({
   minimumOrderQuantity: Joi.number().required()
 });
 
-module.exports.getAllProductSchema = Joi.object().keys({
+module.exports.retrieveAllProductSchema = Joi.object().keys({
   skip: Joi.string(),
   limit: Joi.string()
 });
 
-module.exports.updateProductSchema = Joi.object().keys({
+module.exports.updateExitingProductSchema = Joi.object().keys({
   name: Joi.string(),
   price: Joi.number(),
   brand: Joi.string()
