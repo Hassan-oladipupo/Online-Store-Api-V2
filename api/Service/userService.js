@@ -39,7 +39,6 @@ const mongoDbDataFormat = require('../helper/dbHelper');
 
 
 
-//login 
 
 module.exports.login = async ({ email, password }) => {
   try {

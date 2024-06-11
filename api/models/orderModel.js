@@ -2,17 +2,16 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   contactPerson: String,
-  orderID: Number,
-  orderStatus: String,
-  orderDate: Date,
-  phoneNumber: Number,
+  orderStatus:  String, 
+  orderDate: { type: Date, default: Date.now }, 
+  phoneNumber: String,
   deliveryAddress: String,
   orderNote: String,
-  products: [{
+  productId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'
   }],
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true

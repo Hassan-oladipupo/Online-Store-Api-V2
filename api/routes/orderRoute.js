@@ -1,24 +1,30 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const orderController = require('../Controller/orderController');
+const joiSchemaValidation = require('../middleware/joiSchemaValidation');
+const orderSchema = require('../apiSchema/orderSchema');
+const accessControlValidation = require('../middleware/accessControlValidation');
 
-router.post('/', (req, res) => {
-  res.send('Order created');
-});
+router.post('/',
+    accessControlValidation.validateToken,
+    joiSchemaValidation.validateBody(orderSchema.createOrderSchema),
+    orderController.createOrder
+);
 
-router.get('/', (req, res) => {
-  res.send('List of orders');
-});
+router.get('/');
 
-router.get('/:id', (req, res) => {
-  res.send(`Order details for ID: ${req.params.id}`);
-});
+router.get('/:id',
+  accessControlValidation.validateToken,
+  orderController.retrieveOrderByUserId
+);
 
-router.patch('/:id', (req, res) => {
-  res.send(`Order updated for ID: ${req.params.id}`);
-});
+router.put('/:id',
+  accessControlValidation.validateToken,
+  accessControlValidation.isAdmin,
+  joiSchemaValidation.validateBody(orderSchema.updateOrderSchema),
+  orderController.updateExitingOrder
+);
 
-router.delete('/:id', (req, res) => {
-  res.send(`Order deleted for ID: ${req.params.id}`);
-});
+router.delete('/:id',);
 
 module.exports = router;

@@ -16,7 +16,8 @@ module.exports = {
     Order_CREATED: 'Order Placed Successfully',
     Order_FETCHED: 'Order Fetched Successfully',
     Order_REMOVED: 'Order Removed Successfully',
-    Order_NOT_FOUND: 'Order Not Found'
+    Order_NOT_FOUND: 'Order Not Found',
+    Order_UPDATED: 'Order Updated Successfully',
   },
   userMessage: {
     SIGNUP_SUCCESS: 'Signup Success',

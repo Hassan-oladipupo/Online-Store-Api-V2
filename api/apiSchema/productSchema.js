@@ -13,7 +13,8 @@ module.exports.retrieveAllProductSchema = Joi.object().keys({
 });
 
 module.exports.updateExitingProductSchema = Joi.object().keys({
-  name: Joi.string(),
-  price: Joi.number(),
-  brand: Joi.string()
+    productName: Joi.string(),
+    price: Joi.string(),
+    productDescription: Joi.string(),
+    minimumOrderQuantity: Joi.string()
 });
