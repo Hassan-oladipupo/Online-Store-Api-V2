@@ -5,6 +5,7 @@ const mongoDbDataFormat = require('../helper/dbHelper');
  const jwt = require('jsonwebtoken');
  const validator = require("validator");
  const accessControlValidation = require('../middleware/accessControlValidation')
+ const crypto = require('crypto');
 
 
  
@@ -67,3 +68,52 @@ module.exports.login = async ({ email, password }) => {
   }
 
 }
+
+
+
+module.exports.requestResetPassword = async (email) => {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new Error(constants.userMessage.USER_NOT_FOUND);
+      }
+      const token = crypto.randomBytes(20).toString('hex');
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000; 
+      await user.save();
+      return token;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+  
+  
+  module.exports.confirmResetPassword = async (token, newPassword, confirmPassword) => {
+    try {
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() }
+      });
+  
+      if (!user) {
+        throw new Error(constants.userMessage.USER_NOT_FOUND);
+      }
+
+      if (!accessControlValidation.isValidPassword(newPassword)) {
+        throw new Error(constants.userMessage.WEAK_PASSWORD);
+      }
+
+      if (newPassword != confirmPassword) {
+        throw new Error(constants.userMessage.MATCH_PASSWORD);
+      }
+  
+      user.password = await bcrypt.hash(newPassword, 12);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+  
+      return user;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };

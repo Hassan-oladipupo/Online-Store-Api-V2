@@ -29,3 +29,33 @@ module.exports.login = async (req, res) => {
   }
   return res.status(response.status).send(response);
 }
+
+
+
+module.exports.requestResetPassword = async (req, res) => {
+    let response = { ...constants.customeServerResponse };
+    try {
+      const token = await userService.requestResetPassword(req.body.email);
+      response.status = 200;
+      response.message =constants.userMessage.RESET_PASSWORD;
+      response.body = { token }; 
+    } catch (error) {
+        console.log('Something went wrong: Controller: requestResetPassword', error);
+       response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+  };
+  
+  module.exports.confirmResetPassword = async (req, res) => {
+    let response = { ...constants.customServerResponse };
+    try {
+      await userService.confirmResetPassword(req.body.token, req.body.newPassword, req.body.confirmPassword);
+      response.status = 200;
+      response.message = constants.userMessage.RESET_NEW_PASSWORD;
+    } catch (error) {
+
+        console.log('Something went wrong: Controller: confirmResetPassword', error);
+      response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+  };

@@ -27,6 +27,9 @@ module.exports = {
     INVALID_PASSWORD: 'Incorrect Password',
     INVALID_EMAIL: 'Invalid email format',
     WEAK_PASSWORD: 'Weak password. Password must contain at least 8 characters including uppercase, lowercase and digit',
+    RESET_PASSWORD: 'Reset password link sent successfully',
+    RESET_NEW_PASSWORD: 'Password reset successfully confirmed.',
+    MATCH_PASSWORD: 'New password and confirm password must match.'
   },
   requestValidationMessage: {
     BAD_REQUEST: 'Invalid fields',
