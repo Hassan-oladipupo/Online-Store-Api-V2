@@ -11,7 +11,12 @@ router.post('/',
     orderController.createOrder
 );
 
-router.get('/');
+router.get('/',
+  accessControlValidation.validateToken,
+  accessControlValidation.isAdmin,
+  joiSchemaValidation.validateQueryParams(orderSchema.retrieveAllOrderSchema), 
+  orderController.retrieveAllOrders
+);
 
 router.get('/:id',
   accessControlValidation.validateToken,
@@ -25,6 +30,11 @@ router.put('/:id',
   orderController.updateExitingOrder
 );
 
-router.delete('/:id',);
+router.delete('/:id',
+  accessControlValidation.validateToken,
+  accessControlValidation.isAdmin,
+  joiSchemaValidation.validateQueryParams(orderSchema.retrieveAllOrderSchema), 
+  orderController.removeOrder
+);
 
 module.exports = router;

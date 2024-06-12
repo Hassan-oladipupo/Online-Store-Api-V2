@@ -37,7 +37,7 @@ const constants = require('../constants')
      
       return mongoDbDataFormat.formatMongoData(orders);
     } catch (error) {
-      console.log('Something went wrong: Service: getAllOrder', error);
+      console.log('Something went wrong: Service: retrieveAllOrder', error);
       throw new Error(error);
     }
   }

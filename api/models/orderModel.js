@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
   orderDate: { type: Date, default: Date.now }, 
   phoneNumber: String,
   deliveryAddress: String,
+  TotalProduct: Number,
   orderNote: String,
   productId: [{
     type: mongoose.Schema.Types.ObjectId,
