@@ -22,7 +22,7 @@ module.exports.updateOrderSchema = Joi.object().keys({
     userId: Joi.string().hex().length(24) 
   });
 
-module.exports.retrieveAllOrderSchema = Joi.object().keys({
+module.exports.retrieveUserOrderSchema = Joi.object().keys({
     skip: Joi.string(),
     limit: Joi.string()
   });

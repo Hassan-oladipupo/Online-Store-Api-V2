@@ -7,7 +7,7 @@ module.exports.createOrder = async (req, res) => {
    
     const serviceResponse = await orderService.createOrder(req.body);
     response.status = 201;
-    response.message = constants.orderMessage.Order_CREATED;
+    response.message = constants.orderMessage.ORDER_CREATED;
     response.body = serviceResponse;
   } catch (error) {
     console.log('Something went wrong: Controller: createOrder', error);
@@ -23,7 +23,7 @@ module.exports.retrieveAllOrders = async (req, res) =>
     try {
       const serviceResponse = await orderService.retrieveAllOrders(req.query);
         response.status = 200;
-        response.message = constants.orderMessage.Order_FETCHED;
+        response.message = constants.orderMessage.ORDER_FETCHED;
         response.body = serviceResponse;
      
     } catch (error) {
@@ -33,20 +33,43 @@ module.exports.retrieveAllOrders = async (req, res) =>
     return res.status(response.status).send(response);
   }
 
-  module.exports.retrieveOrderByUserId = async (req, res) => {
-    let response = {...constants.customServerResponse}; 
+  module.exports.getOrdersByUserId = async (req, res) => {
+    let response = { ...constants.customServerResponse };
     try {
-        const serviceResponse = await orderService.retrieveOrdersByUserId(req.params.userId); 
-        response.status = 200;
-        response.message = constants.orderMessage.Order_FETCHED;
-        response.body = serviceResponse;
+      // Extract userId from the token (assuming userId is stored in req.userId after token validation)
+      const userId = req.userId;
+  
+      const serviceResponse = await orderService.retrieveOrdersByUserId(userId);
+      response.status = 200;
+      response.message = constants.orderMessage.ORDER_FETCHED;
+      response.body = serviceResponse;
     } catch (error) {
-        console.log('Something went wrong: Controller: getOrderByUserId', error);
-        response.status = 500; 
-        response.message = error.message; 
+      console.log('Something went wrong: Controller: getOrdersByUserId', error);
+      response.status = 500;
+      response.message = error.message;
     }
     return res.status(response.status).json(response);
-};
+  };
+  ;
+  
+  module.exports.getOrdersByUserId = async (req, res) => {
+    let response = { ...constants.customServerResponse };
+    try {
+      const userId = req.user.id;
+  
+      const serviceResponse = await orderService.retrieveOrdersByUserId(userId, req.query);
+        response.status = 200;
+        response.message = constants.orderMessage.ORDER_FETCHED;
+        response.body = serviceResponse;
+    
+    
+    } catch (error) {
+      console.log('Something went wrong: Controller: getOrdersByUserId', error);
+      response.status = 500;
+      response.message = error.message;
+    }
+    return res.status(response.status).json(response);
+  };
 
 
   module.exports.updateExitingOrder = async (req, res) => {
@@ -57,7 +80,7 @@ module.exports.retrieveAllOrders = async (req, res) =>
         updateInfo: req.body
       });
       response.status = 200;
-      response.message = constants.orderMessage.Order_UPDATED;
+      response.message = constants.orderMessage.ORDER_UPDATED;
       response.body = responseFromService;
     } catch (error) {
       console.log('Something went wrong: Controller: updateOrder', error);

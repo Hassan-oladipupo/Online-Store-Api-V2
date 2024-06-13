@@ -10,7 +10,7 @@ module.exports.validateToken = (req, res, next) => {
     }
     const token = req.headers.authorization.split('Bearer')[1].trim();
     const decoded = jwt.verify(token, process.env.SECRET_KEY || 'my-secret-key');
-    req.user = decoded;
+    req.user = decoded; 
     next();
   } catch (error) {
     console.log('Error', error);
@@ -19,7 +19,6 @@ module.exports.validateToken = (req, res, next) => {
     return res.status(response.status).send(response);
   }
 };
-
 module.exports.isAdmin = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);

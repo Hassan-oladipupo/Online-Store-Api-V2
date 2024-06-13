@@ -72,24 +72,41 @@ module.exports.createOrder = async (serviceData) => {
   };
 
 
- 
 
-
-  module.exports.retrieveOrdersByUserId = async (userId) => {
+  module.exports.retrieveOrdersByUserId = async (userId, { skip = 0, limit = 10 }) => {
     try {
-        mongoDbDataFormat.checkObjectId(id)
-        let order = await Order.findById(id);
-        if (!order) {
-          throw new Error(constants.orderMessage.Order_NOT_FOUND);
-        }
-        return mongoDbDataFormat.formatMongoData(order);
-      } catch (error) {
-        console.log('Something went wrong: Service: retrieveOrdersByUserId', error);
-        throw new Error(error);
+      mongoDbDataFormat.checkObjectId(userId);
+       skip = parseInt(skip) || 0;
+      limit = parseInt(limit) || 10;
+      
+      let orders = await Order.find({ userId })
+        .populate({
+          path: 'productId',
+          select: 'productName'
+        })
+        .skip(skip)
+        .limit(limit);
+  
+      if (!orders || orders.length === 0) {
+          return [];
       }
-}
-
-
+  
+      let formattedOrders = mongoDbDataFormat.formatMongoData(orders);
+      formattedOrders = formattedOrders.map(order => {
+        order.products = order.productId.map(product => ({
+          productId: product._id,
+          productName: product.productName
+        }));
+        delete order.productId; 
+        return order;
+      });
+  
+      return formattedOrders;
+    } catch (error) {
+      console.log('Something went wrong: Service: retrieveOrdersByUserId', error);
+      throw new Error(error.message);
+    }
+  };
 
   module.exports.updateExitingOrder = async ({ id, updateInfo }) => {
     try {

@@ -18,9 +18,11 @@ router.get('/',
   orderController.retrieveAllOrders
 );
 
-router.get('/:id',
+router.get('/user',
   accessControlValidation.validateToken,
-  orderController.retrieveOrderByUserId
+  orderController.getOrdersByUserId,
+  joiSchemaValidation.validateQueryParams(orderSchema.retrieveUserOrderSchema), 
+  
 );
 
 router.put('/:id',

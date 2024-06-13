@@ -21,11 +21,12 @@ module.exports = {
    
   },
   orderMessage: {
-    Order_CREATED: 'Order Placed Successfully',
-    Order_FETCHED: 'Order Fetched Successfully',
-    Order_REMOVED: 'Order Removed Successfully',
-    Order_NOT_FOUND: 'Order Not Found',
-    Order_UPDATED: 'Order Updated Successfully',
+    ORDER_CREATED: 'Order Placed Successfully',
+    ORDER_FETCHED: 'Order Fetched Successfully',
+    ORDER_REMOVED: 'Order Removed Successfully',
+    ORDER_NOT_FOUND: 'Order Not Found',
+    USER_ORDER_NOT_FOUND: 'No Order Found For User',
+    ORDER_UPDATED: 'Order Updated Successfully',
   },
   userMessage: {
     SIGNUP_SUCCESS: 'Signup Success',
