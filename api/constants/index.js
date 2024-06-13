@@ -12,6 +12,14 @@ module.exports = {
     PRODUCT_NOT_FOUND: 'Product Not Found',
     EMPTY_PRODUCT: 'No Product Found'
   },
+  CartMessage: {
+    CART_CREATED: 'Product Successfully Added to Cart',
+    CART_FETCHED: 'Cart Fetched Successfully',
+    CART_UPDATED: 'Cart Updated Successfully',
+    CART_REMOVED: 'Product Remove from Cart',
+     EMPTY_CART: 'No Item Found in Cart'
+   
+  },
   orderMessage: {
     Order_CREATED: 'Order Placed Successfully',
     Order_FETCHED: 'Order Fetched Successfully',

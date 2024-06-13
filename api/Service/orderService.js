@@ -6,8 +6,7 @@ const constants = require('../constants')
 
 
 
-
- module.exports.createOrder = async (serviceData) => {
+module.exports.createOrder = async (serviceData) => {
     try {
       const productIds = serviceData.productId;
       const validProducts = await Product.find({ '_id': { $in: productIds } });
@@ -18,10 +17,24 @@ const constants = require('../constants')
   
       if (!serviceData.orderStatus) {
         serviceData.orderStatus = 'pending';
-    }
-      const newOrder = new Order({...serviceData});
+      }
+  
+      const newOrder = new Order({ ...serviceData });
       const result = await newOrder.save();
-      return mongoDbDataFormat.formatMongoData(result);
+  
+      let savedOrder = await Order.findById(result._id).populate({
+        path: 'productId',
+        select: 'productName'
+      });
+  
+      let formattedOrder = mongoDbDataFormat.formatMongoData(savedOrder);
+      formattedOrder.products = formattedOrder.productId.map(product => ({
+        productId: product._id,
+        productName: product.productName
+      }));
+      delete formattedOrder.productId; 
+  
+      return formattedOrder;
     } catch (error) {
       console.log('Something went wrong: Service: createOrder', error);
       throw new Error(error);
@@ -33,15 +46,30 @@ const constants = require('../constants')
 
   module.exports.retrieveAllOrders = async ({ skip = 0, limit = 10 }) => {
     try {
-      let orders = await Order.find({}).skip(parseInt(skip)).limit(parseInt(limit));
-     
-      return mongoDbDataFormat.formatMongoData(orders);
+      let orders = await Order.find({})
+        .skip(parseInt(skip))
+        .limit(parseInt(limit))
+        .populate({
+          path: 'productId',
+          select: 'productName'
+        });
+  
+      let formattedOrders = mongoDbDataFormat.formatMongoData(orders);
+      formattedOrders = formattedOrders.map(order => {
+        order.products = order.productId.map(product => ({
+          productId: product._id,
+          productName: product.productName
+        }));
+        delete order.productId; 
+        return order;
+      });
+  
+      return formattedOrders;
     } catch (error) {
-      console.log('Something went wrong: Service: retrieveAllOrder', error);
+      console.log('Something went wrong: Service: retrieveAllOrders', error);
       throw new Error(error);
     }
-  }
-
+  };
 
 
  
@@ -56,7 +84,7 @@ const constants = require('../constants')
         }
         return mongoDbDataFormat.formatMongoData(order);
       } catch (error) {
-        console.log('Something went wrong: Service: getProductById', error);
+        console.log('Something went wrong: Service: retrieveOrdersByUserId', error);
         throw new Error(error);
       }
 }
@@ -80,7 +108,7 @@ const constants = require('../constants')
 
      return formattedOrder;
     } catch (error) {
-      console.log('Something went wrong: Service: updateProduct', error);
+      console.log('Something went wrong: Service: updateOrder', error);
       throw new Error(error);
     }
   }
@@ -89,14 +117,25 @@ const constants = require('../constants')
   module.exports.removeOrder = async ({ id }) => {
     try {
       mongoDbDataFormat.checkObjectId(id);
-      let order = await Order.findByIdAndDelete(id);
+      let order = await Order.findByIdAndDelete(id).populate({
+        path: 'productId',
+        select: 'productName'
+      });
       if (!order) {
         throw new Error(constants.orderMessage.Order_NOT_FOUND);
       }
-      return mongoDbDataFormat.formatMongoData(order);
+  
+      let formattedOrder = mongoDbDataFormat.formatMongoData(order);
+      formattedOrder.products = formattedOrder.productId.map(product => ({
+        productId: product._id,
+        productName: product.productName
+      }));
+      delete formattedOrder.productId; 
+  
+      return formattedOrder;
     } catch (error) {
-      console.log('Something went wrong: Service: deleteOrder', error);
+      console.log('Something went wrong: Service: removeOrder', error);
       throw new Error(error);
     }
-  }
+  };
 

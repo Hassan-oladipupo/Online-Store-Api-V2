@@ -33,7 +33,6 @@ router.put('/:id',
 router.delete('/:id',
   accessControlValidation.validateToken,
   accessControlValidation.isAdmin,
-  joiSchemaValidation.validateQueryParams(orderSchema.retrieveAllOrderSchema), 
   orderController.removeOrder
 );
 
