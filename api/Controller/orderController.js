@@ -36,7 +36,6 @@ module.exports.retrieveAllOrders = async (req, res) =>
   module.exports.getOrdersByUserId = async (req, res) => {
     let response = { ...constants.customServerResponse };
     try {
-      // Extract userId from the token (assuming userId is stored in req.userId after token validation)
       const userId = req.userId;
   
       const serviceResponse = await orderService.retrieveOrdersByUserId(userId);

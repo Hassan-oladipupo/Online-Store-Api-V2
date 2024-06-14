@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const cartController = require('../Controller/cartController');
+const cartController = require('../Controller/cartController ');
 const joiSchemaValidation = require('../middleware/joiSchemaValidation');
 const cartSchema = require('../apiSchema/cartSchema');
 const accessControlValidation = require('../middleware/accessControlValidation');
@@ -11,7 +11,7 @@ router.post('/',
   cartController.addToCart
 );
 
-router.get('/:userId',
+router.get('/:user',
   accessControlValidation.validateToken,
   cartController.retrieveUserCart
 );
@@ -24,7 +24,6 @@ router.put('/:id',
 
 router.delete('/:id',
   accessControlValidation.validateToken,
-  accessControlValidation.isAdmin,
   cartController.removeUserCart
 );
 

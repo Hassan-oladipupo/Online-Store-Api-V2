@@ -19,7 +19,9 @@ module.exports.addToCart = async (req, res) => {
 module.exports.retrieveUserCart = async (req, res) => {
   let response = { ...constants.customServerResponse }; 
   try {
-    const serviceResponse = await cartService.retrieveUserCart(req.params.userId); 
+    const userId = req.user.id;
+  
+    const serviceResponse = await cartService.retrieveUserCart(userId); 
     response.status = 200;
     response.message = constants.CartMessage.CART_FETCHED;
     response.body = serviceResponse;
@@ -31,13 +33,14 @@ module.exports.retrieveUserCart = async (req, res) => {
   return res.status(response.status).json(response);
 };
 
+
+
 module.exports.updateUserCart = async (req, res) => {
-  let response = { ...constants.customServerResponse }; 
+  let response = { ...constants.customServerResponse };
   try {
     const responseFromService = await cartService.updateUserCart({
       id: req.params.id,
-      productId: req.body.productId,
-      quantity: req.body.quantity
+      updateInfo: req.body
     });
     response.status = 200;
     response.message = constants.CartMessage.CART_UPDATED;
@@ -49,6 +52,7 @@ module.exports.updateUserCart = async (req, res) => {
   }
   return res.status(response.status).send(response);
 };
+
 
 module.exports.removeUserCart = async (req, res) => {
   let response = { ...constants.customServerResponse }; 

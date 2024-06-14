@@ -19,6 +19,8 @@ app.use(morgan('dev'));
 app.use('/api/v2/products', require('./api/routes/productRoute'));
 app.use('/api/v2/orders', require('./api/routes/orderRoute'));
 app.use('/api/v2/users', require('./api/routes/userRoute'));
+app.use('/api/v2/carts', require('./api/routes/cartRoute'));
+
 
 app.get('/', (req, res) => {
   res.send('RestApi For Online Shopping Stores');

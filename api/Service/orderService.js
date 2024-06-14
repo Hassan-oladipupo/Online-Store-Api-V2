@@ -78,7 +78,7 @@ module.exports.createOrder = async (serviceData) => {
       mongoDbDataFormat.checkObjectId(userId);
        skip = parseInt(skip) || 0;
       limit = parseInt(limit) || 10;
-      
+
       let orders = await Order.find({ userId })
         .populate({
           path: 'productId',
@@ -117,7 +117,7 @@ module.exports.createOrder = async (serviceData) => {
         { new: true }
       ).populate('productId', 'productName');
       if (!order) {
-        throw new Error(constants.orderMessage.Order_NOT_FOUND);
+        throw new Error(constants.orderMessage.ORDER_NOT_FOUND);
       }
      const formattedOrder = mongoDbDataFormat.formatMongoData(order);
 
@@ -139,7 +139,7 @@ module.exports.createOrder = async (serviceData) => {
         select: 'productName'
       });
       if (!order) {
-        throw new Error(constants.orderMessage.Order_NOT_FOUND);
+        throw new Error(constants.orderMessage.ORDER_NOT_FOUND);
       }
   
       let formattedOrder = mongoDbDataFormat.formatMongoData(order);
