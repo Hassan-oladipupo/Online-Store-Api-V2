@@ -84,11 +84,8 @@ module.exports.updateUserCart = async ({ id, updateInfo }) => {
     if (!cart) {
       throw new Error(constants.CartMessage.CART_NOT_FOUND);
     }
-
     const formattedCart = mongoDbDataFormat.formatMongoData(cart);
-
     formattedCart.productId = formattedCart.productId.map(product => product.productName);
-
     return formattedCart;
     
   } catch (error) {
