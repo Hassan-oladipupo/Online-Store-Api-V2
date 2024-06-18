@@ -7,7 +7,8 @@ module.exports.createCartSchema = Joi.object().keys({
 });
 
 module.exports.updateCartSchema = Joi.object().keys({
-  quantity: Joi.number().required(),
+  quantityChange: Joi.number().required(),
+  productId: Joi.required(), 
 
   });
 

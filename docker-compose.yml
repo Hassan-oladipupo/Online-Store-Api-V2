@@ -6,7 +6,7 @@ services:
       - '8000:8000'
     environment:
       NODE_ENV: development
-      MONGO_URL: mongodb+srv://hassanoladipupo:root@hassanoladipupo.vdfhcxr.mongodb.net/E-commerce-storeDB?retryWrites=true&w=majority
+      MONGO_URL: mongodb+srv://hassanoladipupo:root@hassanoladipupo.vdfhcxr.mongodb.net/E-commerce-storeDB
     volumes:
       - .:/app
       - /app/node_modules

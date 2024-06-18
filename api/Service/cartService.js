@@ -68,29 +68,50 @@ module.exports.retrieveUserCart  = async (userId) => {
   }
 };
 
-
-
-
-module.exports.updateUserCart = async ({ id, updateInfo }) => {
+ module.exports.updateUserCart = async ({ id, updateInfo }) => {
   try {
     mongoDbDataFormat.checkObjectId(id);
 
-    let cart = await Cart.findOneAndUpdate(
-      { _id: id },
-      updateInfo,
-      { new: true }
-    ).populate('productId', 'productName');
-  
-    if (!cart) {
-      throw new Error(constants.CartMessage.CART_NOT_FOUND);
+    const { productId, quantityChange } = updateInfo;
+    if (!productId || quantityChange == null) {
+      throw new Error('productId and quantityChange are required');
     }
+
+    let cart = await Cart.findById(id);
+    if (!cart) {
+      throw new Error('No Cart Found');
+    }
+
+    if (!Array.isArray(cart.items)) {
+      cart.items = [];
+    }
+
+    const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+    if (itemIndex === -1) {
+      cart.items.push({ productId, quantity: quantityChange });
+    } else {
+      cart.items[itemIndex].quantity += quantityChange;
+
+      if (cart.items[itemIndex].quantity <= 0) {
+        cart.items.splice(itemIndex, 1);
+      }
+    }
+
+    await cart.save();
+
+    await cart.populate('items.productId', 'productName');
+
     const formattedCart = mongoDbDataFormat.formatMongoData(cart);
-    formattedCart.productId = formattedCart.productId.map(product => product.productName);
+    formattedCart.items = formattedCart.items.map(item => ({
+      productName: item.productId.productName,
+      quantity: item.quantity
+    }));
+
     return formattedCart;
-    
+
   } catch (error) {
     console.log('Something went wrong: Service: updateUserCart', error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
