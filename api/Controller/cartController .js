@@ -10,11 +10,12 @@ module.exports.addToCart = async (req, res) => {
     response.body = serviceResponse;
   } catch (error) {
     console.log('Something went wrong: Controller: addToCart', error);
-    response.status = 500;
     response.message = error.message;
   }
   return res.status(response.status).send(response);
 };
+
+
 
 module.exports.retrieveUserCart = async (req, res) => {
   let response = { ...constants.customServerResponse }; 
@@ -27,16 +28,13 @@ module.exports.retrieveUserCart = async (req, res) => {
     response.body = serviceResponse;
   } catch (error) {
     console.log('Something went wrong: Controller: retrieveUserCart', error);
-    response.status = 500; 
     response.message = error.message; 
   }
   return res.status(response.status).json(response);
 };
 
 
-
-
-module.exports.updateUserCart = async (req, res) => {
+module.exports. updateUserCart = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {
     const responseFromService = await cartService.updateUserCart({
@@ -48,7 +46,6 @@ module.exports.updateUserCart = async (req, res) => {
     response.body = responseFromService;
   } catch (error) {
     console.log('Something went wrong: Controller: updateUserCart', error);
-    response.status = 500;
     response.message = error.message;
   }
   return res.status(response.status).send(response);
@@ -56,7 +53,7 @@ module.exports.updateUserCart = async (req, res) => {
 
 
 
-module.exports.removeUserCart = async (req, res) => {
+module.exports. removeUserCart = async (req, res) => {
   let response = { ...constants.customServerResponse }; 
   try {
     const serviceResponse = await cartService.removeUserCart(req.params.id);
@@ -65,7 +62,6 @@ module.exports.removeUserCart = async (req, res) => {
     response.body = serviceResponse;
   } catch (error) {
     console.log('Something went wrong: Controller: removeUserCart', error);
-    response.status = 500;
     response.message = error.message;
   }
   return res.status(response.status).send(response);

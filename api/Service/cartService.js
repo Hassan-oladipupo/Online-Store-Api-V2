@@ -5,59 +5,77 @@ const constants = require('../constants');
 
 module.exports.addToCart = async (serviceData) => {
   try {
-    const productIds = serviceData.productId;
-    const validProducts = await Product.find({ '_id': { $in: productIds } })  
-  
+    const productIds = serviceData.items.map(item => item.productId);
+    
+    const validProducts = await Product.find({ '_id': { $in: productIds } });
 
     if (validProducts.length !== productIds.length) {
-      throw new Error('One or more product IDs are invalid');
+      throw new Error(constants.productMessage.INVALID_PRODUCT_ID);
     }
+
+    serviceData.items.forEach(item => {
+      const product = validProducts.find(product => product._id.toString() === item.productId);
+      if (!product) {
+        throw new Error(constants.productMessage.INVALID_PRODUCT_ID);
+      }
+      if (item.quantity < product.minimumOrderQuantity) {
+        throw new Error(constants.productMessage.MOQ_NOT_MET(product.productName, product.minimumOrderQuantity));
+      }
+    });
 
     const newCart = new Cart({ ...serviceData });
     const result = await newCart.save();
+
     let savedCart = await Cart.findById(result._id).populate({
-      path: 'productId',
+      path: 'items.productId',
       select: 'productName'
     });
+
     let formattedCart = mongoDbDataFormat.formatMongoData(savedCart);
-      formattedCart.products = formattedCart.productId.map(product => ({
-        productId: product._id,
-        productName: product.productName
+
+    if (Array.isArray(formattedCart.items)) {
+      formattedCart.products = formattedCart.items.map(item => ({
+        productId: item.productId._id,
+        productName: item.productId.productName,
+        quantity: item.quantity
       }));
-      delete formattedCart.productId; 
-  
-      return formattedCart;
+    } else {
+      formattedCart.products = [];
+    }
+
+    delete formattedCart.items;
+
+    return formattedCart;
   } catch (error) {
     console.log('Something went wrong: Service: addToCart', error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 
 
 
-module.exports.retrieveUserCart  = async (userId) => {
+module.exports.retrieveUserCart = async (userId) => {
   try {
     mongoDbDataFormat.checkObjectId(userId);
     
-    
     let carts = await Cart.find({ userId })
       .populate({
-        path: 'productId',
+        path: 'items.productId',
         select: 'productName'
-      })
-     
+      });
 
     if (!carts || carts.length === 0) {
-        return [];
+      throw new Error(constants.CartMessage.EMPTY_CART);
     }
 
     let formattedCarts = mongoDbDataFormat.formatMongoData(carts);
     formattedCarts = formattedCarts.map(cart => {
-      cart.products = cart.productId.map(product => ({
-        productId: product._id,
-        productName: product.productName
+      cart.products = cart.items.map(item => ({
+        productId: item.productId._id,
+        productName: item.productId.productName,
+        quantity: item.quantity
       }));
-      delete cart.productId; 
+      delete cart.items; 
       return cart;
     });
 
@@ -68,18 +86,19 @@ module.exports.retrieveUserCart  = async (userId) => {
   }
 };
 
- module.exports.updateUserCart = async ({ id, updateInfo }) => {
+module.exports.updateUserCart = async ({ id, updateInfo }) => {
   try {
     mongoDbDataFormat.checkObjectId(id);
 
     const { productId, quantityChange } = updateInfo;
+
     if (!productId || quantityChange == null) {
-      throw new Error('productId and quantityChange are required');
+      throw new Error(constants.productMessage.PRODUCT_ITEM_REQUIRE);
     }
 
     let cart = await Cart.findById(id);
     if (!cart) {
-      throw new Error('No Cart Found');
+      throw new Error(constants.CartMessage.EMPTY_CART);
     }
 
     if (!Array.isArray(cart.items)) {
@@ -87,6 +106,7 @@ module.exports.retrieveUserCart  = async (userId) => {
     }
 
     const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+
     if (itemIndex === -1) {
       cart.items.push({ productId, quantity: quantityChange });
     } else {
@@ -102,10 +122,12 @@ module.exports.retrieveUserCart  = async (userId) => {
     await cart.populate('items.productId', 'productName');
 
     const formattedCart = mongoDbDataFormat.formatMongoData(cart);
-    formattedCart.items = formattedCart.items.map(item => ({
+    formattedCart.products = formattedCart.items.map(item => ({
+      productId: item.productId._id,
       productName: item.productId.productName,
       quantity: item.quantity
     }));
+    delete formattedCart.items;
 
     return formattedCart;
 
@@ -115,26 +137,33 @@ module.exports.retrieveUserCart  = async (userId) => {
   }
 };
 
+
+
+
 module.exports.removeUserCart = async (id) => {
   try {
     mongoDbDataFormat.checkObjectId(id);
+    
     let cart = await Cart.findByIdAndDelete(id).populate({
-      path: 'productId',
+      path: 'items.productId',
       select: 'productName'
     });
+    
     if (!cart) {
       throw new Error(constants.CartMessage.EMPTY_CART);
     }
+    
     let formattedCart = mongoDbDataFormat.formatMongoData(cart);
-    formattedCart.products = formattedCart.productId.map(product => ({
-      productId: product._id,
-      productName: product.productName
+    formattedCart.products = formattedCart.items.map(item => ({
+      productId: item.productId._id,
+      productName: item.productId.productName,
+      quantity: item.quantity
     }));
-    delete formattedCart.productId; 
-
+    delete formattedCart.items;
+    
     return formattedCart;
   } catch (error) {
     console.log('Something went wrong: Service: removeUserCart', error);
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };

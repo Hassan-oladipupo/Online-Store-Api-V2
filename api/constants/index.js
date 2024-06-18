@@ -10,7 +10,10 @@ module.exports = {
     PRODUCT_UPDATED: 'Product Updated Successfully',
     PRODUCT_REMOVED: 'Product Removed Successfully',
     PRODUCT_NOT_FOUND: 'Product Not Found',
-    EMPTY_PRODUCT: 'No Product Found'
+    EMPTY_PRODUCT: 'No Product Found',
+    PRODUCT_ITEM_REQUIRE: "productId and quantityChange are required",
+    INVALID_PRODUCT_ID:  "One or more product IDs are invalid",
+    MOQ_NOT_MET: (productName, moq) => `The quantity for product ${productName} must be at least ${moq}`
   },
   CartMessage: {
     CART_CREATED: 'Product Successfully Added to Cart',
