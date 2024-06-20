@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const constants = require('../constants');
-const Order = require('../models/orderModel');
 
 
 module.exports.formatMongoData = (data) => {
