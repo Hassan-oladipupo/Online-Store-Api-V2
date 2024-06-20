@@ -84,3 +84,19 @@ module.exports.retrieveAllProducts = async (req, res) =>
     }
     return res.status(response.status).send(response);
   }
+
+
+
+  module.exports.searchProducts = async (req, res) => {
+    let response = {...constants.customServerResponse }; 
+    try {
+      const serviceResponse = await productService.searchProducts(req.query);
+      response.status = 200;
+      response.message = constants.productMessage.PRODUCT_FETCHED;
+      response.body = serviceResponse;
+    } catch (error) {
+      console.log('Something went wrong: Controller: searchProduct', error);
+      response.message = error.message;
+    }
+    return res.status(response.status).send(response);
+  };

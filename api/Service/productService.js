@@ -40,7 +40,7 @@ module.exports.createProduct = async (serviceData) => {
       }
       return mongoDbDataFormat.formatMongoData(product);
     } catch (error) {
-      console.log('Something went wrong: Service: getProductById', error);
+      console.log('Something went wrong: Service: retrieveProductById', error);
       throw new Error(error);
     }
   }
@@ -63,6 +63,8 @@ module.exports.createProduct = async (serviceData) => {
       throw new Error(error);
     }
   }
+
+
   
   module.exports.removeProduct = async ({ id }) => {
     try {
@@ -78,3 +80,32 @@ module.exports.createProduct = async (serviceData) => {
     }
   }
 
+
+  module.exports.searchProducts = async (queryParameters) => {
+    const { name, minPrice, maxPrice, minMoQ, maxMoQ, description,brand } = queryParameters;
+    let query = {};
+  
+    if (name) {
+      query.productName = { $regex: name, $options: 'i' }; 
+    }
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseFloat(minPrice.replace(/,/g, ''));
+      if (maxPrice) query.price.$lte = parseFloat(maxPrice.replace(/,/g, ''));
+    }
+    if (minMoQ || maxMoQ) {
+      query.minimumOrderQuantity = {};
+      if (minMoQ) query.minimumOrderQuantity.$gte = parseInt(minMoQ, 10);
+      if (maxMoQ) query.minimumOrderQuantity.$lte = parseInt(maxMoQ, 10);
+    }
+    if (description) {
+      query.productDescription = { $regex: description, $options: 'i' }; 
+    }
+    if (brand) {
+      query.productBrand = { $regex: brand, $options: 'i' }; 
+    }
+    console.log("Query Object:", query);
+  
+     const result = await Product.find(query);
+     return result;
+  };

@@ -5,7 +5,8 @@ const productSchema = new mongoose.Schema({
   price: String,
   productDescription: String,
   imageUrl: String,
-  minimumOrderQuantity: String
+  minimumOrderQuantity: String,
+  productBrand: String
 },
  { 
     timestamps: true,

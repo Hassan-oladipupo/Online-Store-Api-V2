@@ -15,15 +15,15 @@ router.post('/',
   );
 
 
-
-
-
-
-
 router.get('/',
  joiSchemaValidation.validateQueryParams(productSchema.retrieveAllProductSchema), 
 productController.retrieveAllProducts
 );
+
+router.get('/search', 
+  joiSchemaValidation.validateQueryParams(productSchema.searchProductSchema),
+  productController.searchProducts
+)
 
 router.get('/:id',
     productController.retrieveProductById
@@ -40,7 +40,8 @@ router.get('/:id',
     accessControlValidation.validateToken,
     accessControlValidation.isAdmin,
     productController.removeProduct
-  )
+  );
 
+  
   
 module.exports = router;    
