@@ -8,34 +8,65 @@ const mongoDbDataFormat = require('../helper/dbHelper');
  const crypto = require('crypto');
 
 
- 
-  
-  module.exports.register = async ({ email, password, firstName, lastName, userRoles }) => {
-    try {
-      if (!validator.isEmail(email)) {
-        throw new Error(constants.userMessage.INVALID_EMAIL);
-      }
-  
-      const user = await User.findOne({ email });
-      if (user) {
-        throw new Error(constants.userMessage.DUPLICATE_EMAIL);
-      }
-  
-      if (!accessControlValidation.isValidPassword(password)) {
-        throw new Error(constants.userMessage.WEAK_PASSWORD);
-      }
-  
-      password = await bcrypt.hash(password, 12);
-  
-      const newUser = new User({ email, password, firstName, lastName, userRoles });
-      let result = await newUser.save();
-      return mongoDbDataFormat.formatMongoData(result);
-    } catch (error) {
-      console.log('Something went wrong: Service: signup', error);
-      throw new Error(error);
+
+module.exports.register = async ({ email, password, firstName, lastName, userRoles }) => {
+  try {
+    if (!validator.isEmail(email)) {
+      throw new Error(constants.userMessage.INVALID_EMAIL);
     }
-  };
-  
+
+    const user = await User.findOne({ email });
+    if (user) {
+      throw new Error(constants.userMessage.DUPLICATE_EMAIL);
+    }
+
+    if (!accessControlValidation.isValidPassword(password)) {
+      throw new Error(constants.userMessage.WEAK_PASSWORD);
+    }
+
+    password = await bcrypt.hash(password, 12);
+    const confirmToken = crypto.randomBytes(32).toString('hex');
+
+    const newUser = new User({ 
+      email, 
+      password, 
+      firstName, 
+      lastName, 
+      userRoles,
+      confirmToken,
+      isConfirmed: false 
+    });
+
+    let result = await newUser.save();
+    return mongoDbDataFormat.formatMongoData(result);
+  } catch (error) {
+    console.log('Something went wrong: Service: signup', error);
+    throw new Error(error);
+  }
+};
+
+module.exports.confirmToken = async (token) => {
+  try {
+    const user = await User.findOne({ confirmToken: token });
+    if (!user) {
+      throw new Error(constants.userMessage.INVALID_TOKEN);
+    }
+
+    if (user.isConfirmed) {
+      throw new Error(constants.userMessage.EMAIL_ALREADY_CONFIRMED);
+    }
+    user.isConfirmed = true;
+    user.confirmToken = undefined;
+    await user.save();
+
+    return mongoDbDataFormat.formatMongoData(user);
+  } catch (error) {
+    console.log('Something went wrong: Service:confirmToken', error);
+    throw new Error(error);
+  }
+}
+
+
 
 
 
@@ -83,7 +114,8 @@ module.exports.requestResetPassword = async (email) => {
       await user.save();
       return token;
     } catch (error) {
-      throw new Error(error.message);
+      console.log('Something went wrong: Service:requestResetPassword', error);
+    throw new Error(error);
     }
   };
   
@@ -114,6 +146,7 @@ module.exports.requestResetPassword = async (email) => {
   
       return user;
     } catch (error) {
-      throw new Error(error.message);
+      console.log('Something went wrong: Service:confirmResetPassword', error);
+      throw new Error(error);
     }
   };

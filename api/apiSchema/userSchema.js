@@ -24,3 +24,8 @@ module.exports.confirmResetPasswordSchema = Joi.object().keys({
   confirmPassword: Joi.string().required(),
 
 });
+
+module.exports.confirmEmail = Joi.object().keys({
+  emailToken: Joi.string().required(),
+  email: Joi.string().required(),
+});

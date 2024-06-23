@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
   lastName: String,
   userRoles: String,
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  confirmToken: { type: String },
+  isConfirmed: { type: Boolean, default: false }
 }, {
     timestamps: true,
     toObject: {

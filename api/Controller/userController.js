@@ -16,6 +16,21 @@ module.exports.register = async (req, res) => {
   return res.status(response.status).send(response);
 }
 
+module.exports.confirmToken = async (req, res) => {
+  let response = { ...constants.customServerResponse };
+  try {
+    const token = req.params.token; 
+    const serviceResponse = await userService.confirmToken(token);
+    response.status = 200;
+    response.message = constants.userMessage.CONFIRM_TOKEN_SUCCESS;
+    response.body = serviceResponse;
+  } catch (error) {
+    console.log('Something went wrong: Controller: confirmToken', error);
+    response.message = error.message;
+  }
+  return res.status(response.status).send(response);
+}
+
 module.exports.login = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {

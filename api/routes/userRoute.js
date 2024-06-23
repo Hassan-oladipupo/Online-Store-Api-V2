@@ -10,7 +10,10 @@ router.post('/register',
   userController.register
 );
 
-
+router.post('/confirm-email',
+  joiSchemaValidation.validateBody(userSchema.confirmEmail),
+  userController.confirmToken
+);
 
 router.post('/login',
   joiSchemaValidation.validateBody(userSchema.login),
@@ -26,5 +29,6 @@ router.post('/request-reset-password',
     joiSchemaValidation.validateBody(userSchema.confirmResetPasswordSchema),
     userController.confirmResetPassword
   );
+
 
 module.exports = router;
