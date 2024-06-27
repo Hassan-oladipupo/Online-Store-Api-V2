@@ -40,7 +40,7 @@ module.exports.register = async ({ email, password, firstName, lastName, userRol
     let result = await newUser.save();
     return mongoDbDataFormat.formatMongoData(result);
   } catch (error) {
-    console.log('Something went wrong: Service: signup', error);
+    console.log('Something went wrong: Service: signup', error)
     throw new Error(error);
   }
 };
