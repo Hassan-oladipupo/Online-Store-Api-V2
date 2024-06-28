@@ -18,6 +18,9 @@ const shippingAddressSchema = Joi.object().keys({
   emailAddress: Joi.string().email().optional(), 
 });
 
+
+
+
 module.exports.addUserProfileSchema = Joi.object().keys({
   email: Joi.string().email().required(),
   firstName: Joi.string().required(),

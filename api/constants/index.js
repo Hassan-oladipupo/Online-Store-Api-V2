@@ -31,6 +31,14 @@ module.exports = {
     USER_ORDER_NOT_FOUND: 'No Order Found For User',
     ORDER_UPDATED: 'Order Updated Successfully',
   },
+  userProfileMessage: {
+    USERPROFILE_CREATED: 'User Profile Added Successfully',
+    USERPROFILE_FETCHED: 'User Profile Fetched Successfully',
+    USERPROFILE_UPDATED: 'User Profile Update Successfully',
+    USER_NOT_FOUND: 'User not found',
+    USERPROFILE_DELETED: 'User Profile Deleted Successfully ',
+  
+  },
   userMessage: {
     SIGNUP_SUCCESS: 'Signup Success',
     LOGIN_SUCCESS: 'Login Success',
