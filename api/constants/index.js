@@ -37,6 +37,7 @@ module.exports = {
     USERPROFILE_UPDATED: 'User Profile Update Successfully',
     USERPROFILE_NOT_FOUND: 'User Profile not found',
     USERPROFILE_DELETED: 'User Profile Deleted Successfully ',
+    PROFILE_IMAGE_UPLOAD: 'Profile Image Uploaded Successfully',
   
   },
   userMessage: {

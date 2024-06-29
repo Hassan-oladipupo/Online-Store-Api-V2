@@ -84,7 +84,7 @@ module.exports.uploadUserProfileImage = (req, res) => {
       const imagePath = req.file.path;
       const serviceResponse = await userProfileService.uploadUserProfileImage(userId, imagePath);
       response.status = 200;
-      response.message = constants.userProfileMessage.USERPROFILE_UPDATED;
+      response.message = constants.userProfileMessage.PROFILE_IMAGE_UPLOAD;
       response.body = serviceResponse;
     } catch (error) {
       console.log('Something went wrong: Controller: uploadUserProfileImage', error);
