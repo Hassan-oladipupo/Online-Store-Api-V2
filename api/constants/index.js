@@ -35,7 +35,7 @@ module.exports = {
     USERPROFILE_CREATED: 'User Profile Added Successfully',
     USERPROFILE_FETCHED: 'User Profile Fetched Successfully',
     USERPROFILE_UPDATED: 'User Profile Update Successfully',
-    USER_NOT_FOUND: 'User not found',
+    USERPROFILE_NOT_FOUND: 'User Profile not found',
     USERPROFILE_DELETED: 'User Profile Deleted Successfully ',
   
   },

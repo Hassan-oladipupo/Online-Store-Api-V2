@@ -23,9 +23,18 @@ module.exports.retrieveUserCart = async (req, res) => {
     const userId = req.user.id;
   
     const serviceResponse = await cartService.retrieveUserCart(userId); 
-    response.status = 200;
+    if(serviceResponse.length ===0)
+      {
+        response.status = 200;
+        response.message = constants.CartMessage.EMPTY_CART;
+      }
+  
+    else{
+      response.status = 200;
     response.message = constants.CartMessage.CART_FETCHED;
-    response.body = serviceResponse;
+      response.body = serviceResponse;
+    }
+   
   } catch (error) {
     console.log('Something went wrong: Controller: retrieveUserCart', error);
     response.message = error.message; 

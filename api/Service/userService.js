@@ -85,7 +85,7 @@ module.exports.login = async ({ email, password }) => {
     if (!isValid) {
       throw new Error(constants.userMessage.INVALID_PASSWORD);
     }
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '1d' });
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
     const result = {
       user: mongoDbDataFormat.formatMongoData(user),
       token: token

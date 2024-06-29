@@ -20,6 +20,7 @@ app.use('/api/v2/products', require('./api/routes/productRoute'));
 app.use('/api/v2/orders', require('./api/routes/orderRoute'));
 app.use('/api/v2/users', require('./api/routes/userRoute'));
 app.use('/api/v2/carts', require('./api/routes/cartRoute'));
+app.use('/api/v2/user-profile', require('./api/routes/userProfileRoute'));
 
 
 app.get('/', (req, res) => {

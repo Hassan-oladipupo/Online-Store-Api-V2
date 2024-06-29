@@ -65,7 +65,7 @@ module.exports.retrieveUserCart = async (userId) => {
       });
 
     if (!carts || carts.length === 0) {
-      throw new Error(constants.CartMessage.EMPTY_CART);
+      return [];
     }
 
     let formattedCarts = mongoDbDataFormat.formatMongoData(carts);
