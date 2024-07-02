@@ -87,11 +87,12 @@ module.exports.login = async ({ email, password }) => {
     if (!isValid) {
       throw new Error(constants.userMessage.INVALID_PASSWORD);
     }
+    const profileImage = userProfileImage.profileImage ? userProfileImage.profileImage : null;
     const tokenPayload = {
       id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      profileImage: userProfileImage.profileImage
+      profileImage:  profileImage
     };
     
     const token = jwt.sign(tokenPayload, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
