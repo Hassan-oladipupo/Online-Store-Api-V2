@@ -6,7 +6,7 @@ const mongoDbDataFormat = require('../helper/dbHelper');
  const validator = require("validator");
  const accessControlValidation = require('../middleware/accessControlValidation')
  const crypto = require('crypto');
- const userProfile = require('../models/userProfileModel')
+ const UserProfile = require('../models/userProfileModel')
 
 
 
@@ -72,46 +72,49 @@ module.exports.confirmToken = async (token) => {
 
 
 
-
 module.exports.login = async ({ email, password }) => {
   try {
     const user = await User.findOne({ email });
-    const userProfileImage = await userProfile.findOne({ email });
     if (!validator.isEmail(email)) {
       throw new Error(constants.userMessage.INVALID_EMAIL);
     }
     if (!user) {
       throw new Error(constants.userMessage.USER_NOT_FOUND);
     }
+
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       throw new Error(constants.userMessage.INVALID_PASSWORD);
     }
-    const profileImage = userProfileImage.profileImage ? userProfileImage.profileImage : null;
+
+    const userProfile = await UserProfile.findOne({ email });
+    let profileImage = null;
+
+    if (userProfile && userProfile.profileImage) {
+      profileImage = userProfile.profileImage;
+    }
+
     const tokenPayload = {
       id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      profileImage:  profileImage
+      profileImage: profileImage
     };
-    
+
     const token = jwt.sign(tokenPayload, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
-    
+
     const result = {
       user: mongoDbDataFormat.formatMongoData(user),
       token: token
     };
 
     return result;
-   
+
   } catch (error) {
-    console.log('Something went wrong: Service: login', error);
+    console.error('Something went wrong: Service: login', error);
     throw new Error(error);
   }
-
 }
-
-
 
 module.exports.requestResetPassword = async (email) => {
     try {
