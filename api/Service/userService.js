@@ -6,6 +6,7 @@ const mongoDbDataFormat = require('../helper/dbHelper');
  const validator = require("validator");
  const accessControlValidation = require('../middleware/accessControlValidation')
  const crypto = require('crypto');
+ const userProfile = require('../models/userProfileModel')
 
 
 
@@ -75,6 +76,7 @@ module.exports.confirmToken = async (token) => {
 module.exports.login = async ({ email, password }) => {
   try {
     const user = await User.findOne({ email });
+    const userProfileImage = await userProfile.findOne({ email });
     if (!validator.isEmail(email)) {
       throw new Error(constants.userMessage.INVALID_EMAIL);
     }
@@ -85,7 +87,15 @@ module.exports.login = async ({ email, password }) => {
     if (!isValid) {
       throw new Error(constants.userMessage.INVALID_PASSWORD);
     }
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
+    const tokenPayload = {
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      profileImage: userProfileImage.profileImage
+    };
+    
+    const token = jwt.sign(tokenPayload, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
+    
     const result = {
       user: mongoDbDataFormat.formatMongoData(user),
       token: token
