@@ -44,17 +44,11 @@ module.exports.retrieveProductReviewById = async (req, res) => {
   try {
     const { id } = req.params;
     const serviceResponse = await productReviewService.retrieveProductReviewById({ id });
-    if(serviceResponse.length ===0)
-      {
-        response.status = 200;
-        response.message = constants.reviewMessage.REVIEW_NOT_FOUND;
-      }
-  
-    else{
+    
       response.status = 200;
-    response.message = constants.reviewMessage.REVIEW_FETCHED;
+      response.message = constants.reviewMessage.REVIEW_FETCHED;
       response.body = serviceResponse;
-    }
+    
   } catch (error) {
     console.log('Something went wrong: Controller: retrieveProductReviewById', error);
     response.message = error.message;
@@ -66,22 +60,15 @@ module.exports.updateExistingProductReview = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {
     const userId = req.user.id; 
-    const responseFromService = await productReviewService.updateExistingProductReview({
+    const serviceResponse = await productReviewService.updateExistingProductReview({
       id: req.params.id,
       updateInfo: req.body,
       userId: userId
     });
-    if(serviceResponse.length ===0)
-      {
-        response.status = 200;
-        response.message = constants.reviewMessage.REVIEW_NOT_FOUND;
-      }
-  
-    else{
       response.status = 200;
-    response.message = constants.reviewMessage.REVIEW_FETCHED;
+      response.message = constants.reviewMessage.REVIEW_UPDATED;
       response.body = serviceResponse;
-    }
+    
   } catch (error) {
     console.log('Something went wrong: Controller: updateExistingProductReview', error);
     response.message = error.message;
@@ -97,17 +84,10 @@ module.exports.removeProductReview = async (req, res) => {
       id: req.params.id,
       userId: userId
     });
-    if(serviceResponse.length ===0)
-      {
-        response.status = 200;
-        response.message = constants.reviewMessage.REVIEW_NOT_FOUND;
-      }
-  
-    else{
       response.status = 200;
-    response.message = constants.reviewMessage.REVIEW_FETCHED;
+      response.message = constants.reviewMessage.REVIEW_REMOVED;
       response.body = serviceResponse;
-    }
+    
   } catch (error) {
     console.log('Something went wrong: Controller: removeProductReview', error);
     response.message = error.message;
@@ -121,9 +101,16 @@ module.exports.retrieveProductReviewsByUserId = async (req, res) => {
   try {
     const userId = req.user.id; 
     const serviceResponse = await productReviewService.retrieveProductReviewsByUserId({ userId });
-    response.status = 200;
+    if(serviceResponse.length ===0)
+      {
+        response.status = 200;
+        response.message = constants.reviewMessage.REVIEW_NOT_FOUND;
+      }
+    else{
+      response.status = 200;
     response.message = constants.reviewMessage.REVIEW_FETCHED;
-    response.body = serviceResponse;
+      response.body = serviceResponse;
+    }
   } catch (error) {
     console.log('Something went wrong: Controller: retrieveProductReviewsByUserId', error);
     response.message = error.message;

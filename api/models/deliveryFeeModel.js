@@ -1,20 +1,14 @@
 const mongoose = require('mongoose');
 
-const productReviewSchema = new mongoose.Schema({
+const deliveryFeeSchema = new mongoose.Schema({
   productId: String,
-  review: String,
-  reviewer: String,
-  reviewerEmail: String,
-  rating: String,
+  quantity: Number,
+  state: String,
+  location: String,
   productId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'
   }],
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
 },
  { 
     timestamps: true,
@@ -35,4 +29,4 @@ const productReviewSchema = new mongoose.Schema({
 
 );
 
-module.exports = mongoose.model('ProductReview', productReviewSchema);
+module.exports = mongoose.model('DeliveryFee', deliveryFeeSchema);

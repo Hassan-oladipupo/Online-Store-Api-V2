@@ -33,7 +33,7 @@ module.exports.retrieveProductsReview = async () => {
     if (!review || review.length === 0) {
       return [];
     }
-    return mongoDbDataFormat.formatMongoData(reviews);
+    return mongoDbDataFormat.formatMongoData(review);
   } catch (error) {
     console.log('Something went wrong: Service: retrieveProductsReview', error);
     throw new Error(error);
@@ -47,9 +47,10 @@ module.exports.retrieveProductReviewById = async ({ id }) => {
       path: 'productId',
       select: 'productName price imageUrl'
     });
-    if (!review || review.length === 0) {
-      return [];
+    if (!review) {
+      throw new Error(constants.reviewMessage.REVIEW_NOT_FOUND);
     }
+
     return mongoDbDataFormat.formatMongoData(review);
   } catch (error) {
     console.log('Something went wrong: Service: retrieveProductReviewById', error);
@@ -63,12 +64,14 @@ module.exports.updateExistingProductReview = async ({ id, updateInfo, userId }) 
     mongoDbDataFormat.checkObjectId(id);
     const review = await ProductReview.findById(id);
 
-    if (!review || review.length === 0) {
-      return [];
+    if (!review) {
+      throw new Error(constants.reviewMessage.REVIEW_NOT_FOUND);
     }
+    
     if (review.userId.toString() !== userId) {
       throw new Error(constants.reviewMessage.REVIEW_UNAUTHORIZED);
     }
+    
 
     const updatedReview = await ProductReview.findOneAndUpdate(
       { _id: id },
@@ -91,13 +94,15 @@ module.exports.removeProductReview = async ({ id, userId }) => {
     mongoDbDataFormat.checkObjectId(id);
     const review = await ProductReview.findByIdAndDelete(id);
 
-    if (!review || review.length === 0) {
-      return [];
+    if (!review) {
+      throw new Error(constants.reviewMessage.REVIEW_NOT_FOUND);
     }
 
     if (review.userId.toString() !== userId) {
       throw new Error(constants.reviewMessage.REVIEW_UNAUTHORIZED);
     }
+
+   
 
 
     return mongoDbDataFormat.formatMongoData(review);
@@ -110,11 +115,14 @@ module.exports.removeProductReview = async ({ id, userId }) => {
 module.exports.retrieveProductReviewsByUserId = async ({ userId }) => {
   try {
     mongoDbDataFormat.checkObjectId(userId);
-    const reviews = await ProductReview.find({ userId }).populate({
+    const review = await ProductReview.find({ userId }).populate({
       path: 'productId',
       select: 'productName price imageUrl'
     });
-    return mongoDbDataFormat.formatMongoData(reviews);
+    if (!review || review.length === 0) {
+      return [];
+    }
+    return mongoDbDataFormat.formatMongoData(review);
   } catch (error) {
     console.log('Something went wrong: Service: retrieveProductReviewsByUserId', error);
     throw new Error(error);
