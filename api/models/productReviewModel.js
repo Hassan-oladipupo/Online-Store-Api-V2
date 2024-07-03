@@ -6,6 +6,15 @@ const productReviewSchema = new mongoose.Schema({
   reviewer: String,
   reviewerEmail: String,
   rating: String,
+  productId: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  }],
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 },
  { 
     timestamps: true,

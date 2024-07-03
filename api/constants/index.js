@@ -6,7 +6,7 @@ module.exports = {
   },
   productMessage: {
     PRODUCT_CREATED: 'Product Created Successfully',
-    PRODUCT_FETCHED: 'Product Fetched Successfully',
+    PRODUCT_FETCHED: 'Product(s) Fetched Successfully',
     PRODUCT_UPDATED: 'Product Updated Successfully',
     PRODUCT_REMOVED: 'Product Removed Successfully',
     PRODUCT_NOT_FOUND: 'Product Not Found',
@@ -17,7 +17,7 @@ module.exports = {
   },
   CartMessage: {
     CART_CREATED: 'Product Successfully Added to Cart',
-    CART_FETCHED: 'Cart Fetched Successfully',
+    CART_FETCHED: 'Cart(s) Fetched Successfully',
     CART_UPDATED: 'Cart Updated Successfully',
     CART_REMOVED: 'Product Remove from Cart',
      EMPTY_CART: 'No Item Found in Cart'
@@ -25,11 +25,20 @@ module.exports = {
   },
   orderMessage: {
     ORDER_CREATED: 'Order Placed Successfully',
-    ORDER_FETCHED: 'Order Fetched Successfully',
+    ORDER_FETCHED: 'Order(s) Fetched Successfully',
     ORDER_REMOVED: 'Order Removed Successfully',
     ORDER_NOT_FOUND: 'Order Not Found',
     USER_ORDER_NOT_FOUND: 'No Order Found For User',
     ORDER_UPDATED: 'Order Updated Successfully',
+  },
+  reviewMessage: {
+    REVIEW_CREATED: 'Review added Successfully',
+    REVIEW_FETCHED: 'Review(s)  Fetched Successfully',
+    REVIEW_REMOVED: 'Review Removed Successfully',
+    REVIEW_NOT_FOUND: 'Review Not Found',
+    REVIEW_UPDATED: 'Review Updated Successfully',
+    REVIEW_UNAUTHORIZED: "Access denied",
+    USER_NOT_FOUND: 'User not found',
   },
   userProfileMessage: {
     USERPROFILE_CREATED: 'User Profile Added Successfully',

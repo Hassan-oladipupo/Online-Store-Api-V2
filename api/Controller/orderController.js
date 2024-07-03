@@ -94,7 +94,7 @@ module.exports.retrieveAllOrders = async (req, res) =>
     try {
       const serviceResponse = await orderService.removeOrder(req.params);
       response.status = 200;
-      response.message = constants.orderMessage.Order_REMOVED;
+      response.message = constants.orderMessage.ORDER_REMOVED;
       response.body = serviceResponse;
     } catch (error) {
       console.log('Something went wrong: Controller: deleteOrder', error);
