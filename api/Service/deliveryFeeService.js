@@ -43,7 +43,7 @@ module.exports.retrieveDeliveryFeeById = async ({ id }) => {
   }
 }
 
-module.exports.getDeliveryFee = async ({ productId, state, location }) => {
+module.exports.getDeliveryFee = async ({ productId, state, location,quantity }) => {
   try {
     let deliveryCost = await deliveryFee.findOne({
       productId,
@@ -54,8 +54,9 @@ module.exports.getDeliveryFee = async ({ productId, state, location }) => {
     if (!deliveryCost || deliveryCost.length === 0) {
       return [];
     }
+      const totalDeliveryFee = deliveryCost.deliveryFee * quantity;
 
-    return mongoDbDataFormat.formatMongoData(deliveryCost);
+    return mongoDbDataFormat.formatMongoData(totalDeliveryFee);
   } catch (error) {
     console.log('Something went wrong: Service: getDeliveryFee', error);
     throw new Error(error);
@@ -71,7 +72,7 @@ module.exports.updateExitingDeliveryFee = async ({ id, updateInfo }) => {
       updateInfo,
       { new: true }
     )
-    return mongoDbDataFormat.formatMongoData(product);
+    return mongoDbDataFormat.formatMongoData(deliveryCost);
   } catch (error) {
     console.log('Something went wrong: Service: updateExitingDeliveryFee', error);
     throw new Error(error);

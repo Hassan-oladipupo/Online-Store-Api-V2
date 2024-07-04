@@ -5,6 +5,7 @@ const deliveryFeeSchema = new mongoose.Schema({
   quantity: Number,
   state: String,
   location: String,
+  deliveryFee: String,
   productId: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product'

@@ -56,8 +56,8 @@ module.exports.retrieveDeliveryFeeById = async (req, res) => {
 module.exports.getDeliveryFee = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {
-    const { productId, state, location } = req.query;
-    const serviceResponse = await deliveryFeeService.getDeliveryFee({ productId, state, location });
+    const { productId, state, location,quantity } = req.query;
+    const serviceResponse = await deliveryFeeService.getDeliveryFee({ productId, state, location,quantity });
     if(serviceResponse.length ===0)
         {
           response.status = 200;
@@ -88,7 +88,7 @@ module.exports.updateExitingDeliveryFee = async (req, res) => {
         response.body = serviceResponse;
       
     } catch (error) {
-      console.log('Something went wrong: Controller: updateProduct', error);
+      console.log('Something went wrong: Controller: updateExitingDeliveryFee', error);
       response.message = error.message;
     }
     return res.status(response.status).send(response);
@@ -100,10 +100,10 @@ module.exports.updateExitingDeliveryFee = async (req, res) => {
     try {
       const serviceResponse = await deliveryFeeService.removeDeliveryFee(req.params);
       response.status = 200;
-      response.message = constants.productMessage.PRODUCT_REMOVED;
+      response.message = constants.deliveryFeeMessage.DELIVERY_FEE_REMOVED;
       response.body = serviceResponse;
     } catch (error) {
-      console.log('Something went wrong: Controller: deleteProduct', error);
+      console.log('Something went wrong: Controller: removeDeliveryFee', error);
       response.message = error.message;
     }
     return res.status(response.status).send(response);
