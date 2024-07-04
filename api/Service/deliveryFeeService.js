@@ -43,25 +43,34 @@ module.exports.retrieveDeliveryFeeById = async ({ id }) => {
   }
 }
 
-module.exports.getDeliveryFee = async ({ productId, state, location,quantity }) => {
+
+module.exports.getDeliveryFee = async ({ productId, state, location, quantity }) => {
   try {
+    mongoDbDataFormat.checkObjectId(productId);
+
     let deliveryCost = await deliveryFee.findOne({
       productId,
       state,
       location
     });
 
-    if (!deliveryCost || deliveryCost.length === 0) {
+    if (!deliveryCost) {
       return [];
     }
-      const totalDeliveryFee = deliveryCost.deliveryFee * quantity;
 
-    return mongoDbDataFormat.formatMongoData(totalDeliveryFee);
+    let totalDeliveryFee = deliveryCost.deliveryFee * quantity;
+
+    let formattedData = mongoDbDataFormat.formatMongoData(deliveryCost);
+    formattedData.totalDeliveryFee = totalDeliveryFee;
+
+    return formattedData;
   } catch (error) {
     console.log('Something went wrong: Service: getDeliveryFee', error);
     throw new Error(error);
   }
 };
+
+
 
 
 module.exports.updateExitingDeliveryFee = async ({ id, updateInfo }) => {

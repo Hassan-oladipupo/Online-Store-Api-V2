@@ -76,6 +76,35 @@ module.exports.getDeliveryFee = async (req, res) => {
 };
 
 
+module.exports.getDeliveryFee = async (req, res) => {
+    let response = { ...constants.customServerResponse };
+    try {
+      const { productId, state, location, quantity } = req.query;
+  
+      const quantityNumber = parseInt(quantity, 10);
+  
+      if (isNaN(quantityNumber) || quantityNumber <= 0) {
+        response.status = 400;
+        response.message = 'Invalid quantity';
+        return res.status(response.status).send(response);
+      }
+  
+      const serviceResponse = await deliveryFeeService.getDeliveryFee({ productId, state, location, quantity: quantityNumber });
+  
+      response.status = 200;
+      response.message = 'Success';
+      response.body = serviceResponse;
+    } catch (error) {
+      console.log('Something went wrong: Controller: getDeliveryFee', error);
+      response.status = 500;
+      response.message = 'Internal Server Error';
+    }
+    return res.status(response.status).send(response);
+  };
+  
+
+
+
 module.exports.updateExitingDeliveryFee = async (req, res) => {
     let response = {...constants.customServerResponse }; 
     try {
