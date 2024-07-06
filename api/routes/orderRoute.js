@@ -14,7 +14,7 @@ router.post('/',
 router.get('/',
   accessControlValidation.validateToken,
   accessControlValidation.isAdmin,
-  joiSchemaValidation.validateQueryParams(orderSchema.retrieveAllOrderSchema), 
+  joiSchemaValidation.validateQueryParams(orderSchema.retrieveUserOrderSchema), 
   orderController.retrieveAllOrders
 );
 

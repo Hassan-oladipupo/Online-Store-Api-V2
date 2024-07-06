@@ -18,11 +18,11 @@ module.exports.createProductSchema = Joi.object({
   sale_price: Joi.string().optional(),
   date_on_sale_from: Joi.date().optional(),
   date_on_sale_to: Joi.date().optional(),
-  on_sale: Joi.boolean().optional(),
-  purchasable: Joi.boolean().optional(),
+  on_sale: Joi.string().valid('true', 'false').required(),
+  purchasable: Joi.string().valid('true', 'false').required(),
   total_sales: Joi.number().optional(),
   productTag: Joi.string().optional() 
-});
+}).options({ stripUnknown: true });
 
 module.exports.retrieveAllProductSchema = Joi.object({
   skip: Joi.string().optional(),
@@ -47,11 +47,11 @@ module.exports.updateExistingProductSchema = Joi.object({
   sale_price: Joi.string().optional(),
   date_on_sale_from: Joi.date().optional(),
   date_on_sale_to: Joi.date().optional(),
-  on_sale: Joi.boolean().optional(),
-  purchasable: Joi.boolean().optional(),
+  on_sale: Joi.string().valid('true', 'false').optional(),
+  purchasable: Joi.string().valid('true', 'false').optional(),
   total_sales: Joi.number().optional(),
   productTag: Joi.string().optional() 
-});
+}).options({ stripUnknown: true });
 
 module.exports.searchProductSchema = Joi.object({
   productName: Joi.string().optional(),
@@ -60,7 +60,7 @@ module.exports.searchProductSchema = Joi.object({
   minMoQ: Joi.string().optional(),
   maxMoQ: Joi.string().optional(),
   productDescription: Joi.string().optional(),
-  productBrand: Joi.string().optional(),
-  productCategory: Joi.string().optional(),
-  productTag: Joi.string().optional() 
-});
+  brand: Joi.string().optional(),
+  category: Joi.string().optional(),
+  tag: Joi.string().optional() 
+}).options({ stripUnknown: true });

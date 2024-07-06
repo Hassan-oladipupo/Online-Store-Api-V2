@@ -32,7 +32,7 @@ router.get('/:id',
   router.put('/:id',
     accessControlValidation.validateToken,
     accessControlValidation.isAdmin,
-    joiSchemaValidation.validateBody(productSchema.updateExitingProductSchema),
+    joiSchemaValidation.validateBody(productSchema.updateExistingProductSchema ),
     productController.updateExitingProduct
   );
 

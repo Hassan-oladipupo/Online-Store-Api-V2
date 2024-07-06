@@ -38,7 +38,7 @@ module.exports.retrieveDeliveryFeeById = async ({ id }) => {
     }
     return mongoDbDataFormat.formatMongoData(deliveryCost);
   } catch (error) {
-    console.log('Something went wrong: Service: retrievePretrieveDeliveryFeeById', error);
+    console.log('Something went wrong: Service: retrieveRetrieveDeliveryFeeById', error);
     throw new Error(error);
   }
 }

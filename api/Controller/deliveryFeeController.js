@@ -91,9 +91,16 @@ module.exports.getDeliveryFee = async (req, res) => {
   
       const serviceResponse = await deliveryFeeService.getDeliveryFee({ productId, state, location, quantity: quantityNumber });
   
-      response.status = 200;
-      response.message = 'Success';
-      response.body = serviceResponse;
+      if(serviceResponse.length ===0)
+        {
+          response.status = 200;
+          response.message = constants.deliveryFeeMessage.Delivery_FEE_NOT_FOUND;
+        }
+      else{
+        response.status = 200;
+      response.message = constants.deliveryFeeMessage.DELIVERY_FEE_FETCHED;
+        response.body = serviceResponse;
+      }
     } catch (error) {
       console.log('Something went wrong: Controller: getDeliveryFee', error);
       response.status = 500;

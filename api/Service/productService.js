@@ -82,7 +82,7 @@ module.exports.createProduct = async (serviceData) => {
 
 
   module.exports.searchProducts = async (queryParameters) => {
-    const { name, minPrice, maxPrice, minMoQ, maxMoQ, description, brand, productTag, productCategory } = queryParameters;
+    const { name, minPrice, maxPrice, minMoQ, maxMoQ, description, brand, tag, category } = queryParameters;
     let query = {};
   
     if (name) {
@@ -99,11 +99,11 @@ module.exports.createProduct = async (serviceData) => {
     if (brand) {
       query.productBrand = { $regex: brand, $options: 'i' };
     }
-    if (productTag) {
-      query.productTag = { $regex: productTag, $options: 'i' };
+    if (tag) {
+      query.productTag = { $regex: tag, $options: 'i' };
     }
-    if (productCategory) {
-      query.productCategory = { $regex: productCategory, $options: 'i' };
+    if (category) {
+      query.productCategory = { $regex: category, $options: 'i' };
     }
     if (minMoQ || maxMoQ) {
       query.minimumOrderQuantity = {};

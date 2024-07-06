@@ -95,7 +95,7 @@ module.exports.createOrder = async (serviceData) => {
       formattedOrders = formattedOrders.map(order => {
         order.products = order.productId.map(product => ({
           productId: product._id,
-          productName: product.productName
+          productName: product.productName,
         }));
         delete order.productId; 
         return order;

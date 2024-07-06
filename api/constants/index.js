@@ -33,7 +33,7 @@ module.exports = {
   },
   deliveryFeeMessage: {
     DELIVERY_FEE_CREATED: 'Delivery fee Added Successfully',
-    DELIVERY_FEE_FETCHED: 'Delivery fee Fetched Successfully',
+    DELIVERY_FEE_FETCHED: 'Delivery fee (s) Fetched Successfully',
     DELIVERY_FEE_UPDATED: 'Delivery fee Updated Successfully',
     DELIVERY_FEE_REMOVED: 'Delivery fee Removed Successfully',
     Delivery_FEE_NOT_FOUND: 'Delivery fee not found',
