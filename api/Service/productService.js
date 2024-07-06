@@ -82,30 +82,43 @@ module.exports.createProduct = async (serviceData) => {
 
 
   module.exports.searchProducts = async (queryParameters) => {
-    const { name, minPrice, maxPrice, minMoQ, maxMoQ, description,brand } = queryParameters;
+    const { name, minPrice, maxPrice, minMoQ, maxMoQ, description, brand, productTag, productCategory } = queryParameters;
     let query = {};
   
     if (name) {
-      query.productName = { $regex: name, $options: 'i' }; 
+      query.productName = { $regex: name, $options: 'i' };
     }
     if (minPrice || maxPrice) {
       query.price = {};
       if (minPrice) query.price.$gte = parseFloat(minPrice.replace(/,/g, ''));
       if (maxPrice) query.price.$lte = parseFloat(maxPrice.replace(/,/g, ''));
     }
+    if (description) {
+      query.productDescription = { $regex: description, $options: 'i' };
+    }
+    if (brand) {
+      query.productBrand = { $regex: brand, $options: 'i' };
+    }
+    if (productTag) {
+      query.productTag = { $regex: productTag, $options: 'i' };
+    }
+    if (productCategory) {
+      query.productCategory = { $regex: productCategory, $options: 'i' };
+    }
     if (minMoQ || maxMoQ) {
       query.minimumOrderQuantity = {};
       if (minMoQ) query.minimumOrderQuantity.$gte = parseInt(minMoQ, 10);
       if (maxMoQ) query.minimumOrderQuantity.$lte = parseInt(maxMoQ, 10);
     }
-    if (description) {
-      query.productDescription = { $regex: description, $options: 'i' }; 
-    }
-    if (brand) {
-      query.productBrand = { $regex: brand, $options: 'i' }; 
-    }
+  
     console.log("Query Object:", query);
   
-     const result = await Product.find(query);
-     return result;
+    try {
+      const result = await Product.find(query).exec();
+      return result;
+    } catch (error) {
+      console.log('Something went wrong: Service: searchProducts', error);
+      throw new Error(error);
+    }
   };
+  

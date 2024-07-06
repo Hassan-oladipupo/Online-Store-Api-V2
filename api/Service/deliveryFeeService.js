@@ -70,9 +70,6 @@ module.exports.getDeliveryFee = async ({ productId, state, location, quantity })
   }
 };
 
-
-
-
 module.exports.updateExitingDeliveryFee = async ({ id, updateInfo }) => {
   try {
     mongoDbDataFormat.checkObjectId(id);
