@@ -5,15 +5,17 @@ const constants = require('../constants');
 
 module.exports.addToCart = async (serviceData) => {
   try {
-    const productIds = serviceData.items.map(item => item.productId);
+    const userId = serviceData.userId;
+    const items = serviceData.items;
     
+    const productIds = items.map(item => item.productId);
     const validProducts = await Product.find({ '_id': { $in: productIds } });
 
     if (validProducts.length !== productIds.length) {
       throw new Error(constants.productMessage.INVALID_PRODUCT_ID);
     }
 
-    serviceData.items.forEach(item => {
+    items.forEach(item => {
       const product = validProducts.find(product => product._id.toString() === item.productId);
       if (!product) {
         throw new Error(constants.productMessage.INVALID_PRODUCT_ID);
@@ -23,12 +25,26 @@ module.exports.addToCart = async (serviceData) => {
       }
     });
 
-    const newCart = new Cart({ ...serviceData });
-    const result = await newCart.save();
+    let cart = await Cart.findOne({ userId });
+
+    if (cart) {
+      items.forEach(item => {
+        const productIndex = cart.items.findIndex(cartItem => cartItem.productId.toString() === item.productId);
+        if (productIndex !== -1) {
+          cart.items[productIndex].quantity += item.quantity;
+        } else {
+          cart.items.push(item);
+        }
+      });
+    } else {
+      cart = new Cart({ userId, items });
+    }
+
+    const result = await cart.save();
 
     let savedCart = await Cart.findById(result._id).populate({
       path: 'items.productId',
-      select: 'productName'
+      select: 'productName price'
     });
 
     let formattedCart = mongoDbDataFormat.formatMongoData(savedCart);
@@ -37,10 +53,13 @@ module.exports.addToCart = async (serviceData) => {
       formattedCart.products = formattedCart.items.map(item => ({
         productId: item.productId._id,
         productName: item.productId.productName,
-        quantity: item.quantity
+        quantity: item.quantity,
+        totalAmount: item.productId.price * item.quantity
       }));
+      formattedCart.totalCartAmount = formattedCart.products.reduce((sum, product) => sum + product.totalAmount, 0);
     } else {
       formattedCart.products = [];
+      formattedCart.totalCartAmount = 0;
     }
 
     delete formattedCart.items;
@@ -54,6 +73,7 @@ module.exports.addToCart = async (serviceData) => {
 
 
 
+
 module.exports.retrieveUserCart = async (userId) => {
   try {
     mongoDbDataFormat.checkObjectId(userId);
@@ -61,7 +81,7 @@ module.exports.retrieveUserCart = async (userId) => {
     let carts = await Cart.find({ userId })
       .populate({
         path: 'items.productId',
-        select: 'productName'
+        select: 'productName price'  
       });
 
     if (!carts || carts.length === 0) {
@@ -73,8 +93,10 @@ module.exports.retrieveUserCart = async (userId) => {
       cart.products = cart.items.map(item => ({
         productId: item.productId._id,
         productName: item.productId.productName,
-        quantity: item.quantity
+        quantity: item.quantity,
+        totalAmount: item.productId.price * item.quantity
       }));
+      cart.totalCartAmount = cart.products.reduce((sum, product) => sum + product.totalAmount, 0);
       delete cart.items; 
       return cart;
     });
@@ -85,6 +107,7 @@ module.exports.retrieveUserCart = async (userId) => {
     throw new Error(error.message);
   }
 };
+
 
 module.exports.updateUserCart = async ({ id, updateInfo }) => {
   try {
@@ -119,14 +142,16 @@ module.exports.updateUserCart = async ({ id, updateInfo }) => {
 
     await cart.save();
 
-    await cart.populate('items.productId', 'productName');
+    await cart.populate('items.productId', 'productName price');
 
     const formattedCart = mongoDbDataFormat.formatMongoData(cart);
     formattedCart.products = formattedCart.items.map(item => ({
       productId: item.productId._id,
       productName: item.productId.productName,
-      quantity: item.quantity
+      quantity: item.quantity,
+      totalAmount: item.productId.price * item.quantity  
     }));
+    formattedCart.totalCartAmount = formattedCart.products.reduce((sum, product) => sum + product.totalAmount, 0);
     delete formattedCart.items;
 
     return formattedCart;
@@ -139,14 +164,13 @@ module.exports.updateUserCart = async ({ id, updateInfo }) => {
 
 
 
-
 module.exports.removeUserCart = async (id) => {
   try {
     mongoDbDataFormat.checkObjectId(id);
     
     let cart = await Cart.findByIdAndDelete(id).populate({
       path: 'items.productId',
-      select: 'productName'
+      select: 'productName price'  
     });
     
     if (!cart) {
@@ -157,8 +181,10 @@ module.exports.removeUserCart = async (id) => {
     formattedCart.products = formattedCart.items.map(item => ({
       productId: item.productId._id,
       productName: item.productId.productName,
-      quantity: item.quantity
+      quantity: item.quantity,
+      totalAmount: item.productId.price * item.quantity
     }));
+    formattedCart.totalCartAmount = formattedCart.products.reduce((sum, product) => sum + product.totalAmount, 0);
     delete formattedCart.items;
     
     return formattedCart;
@@ -167,3 +193,4 @@ module.exports.removeUserCart = async (id) => {
     throw new Error(error.message);
   }
 };
+

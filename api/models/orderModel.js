@@ -2,15 +2,20 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
   contactPerson: String,
-  orderStatus:  String, 
-  orderDate: { type: Date, default: Date.now }, 
+  orderStatus: String,
+  orderDate: { type: Date, default: Date.now },
   phoneNumber: String,
   deliveryAddress: String,
-  TotalProduct: Number,
+  totalProduct: Number,
   orderNote: String,
-  productId: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product'
+  totalAmount: Number,
+  products: [{
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    },
+    quantity: Number,
+    totalPrice: Number  
   }],
   userId: {
     type: mongoose.Schema.Types.ObjectId,

@@ -13,7 +13,8 @@ module.exports = {
     EMPTY_PRODUCT: 'No Product Found',
     PRODUCT_ITEM_REQUIRE: "productId and quantityChange are required",
     INVALID_PRODUCT_ID:  "One or more product IDs are invalid",
-    MOQ_NOT_MET: (productName, moq) => `The quantity for product ${productName} must be at least ${moq}`
+    MOQ_NOT_MET: (productName, moq) => `The quantity for product ${productName} must be at least ${moq}`,
+     PRODUCT_ID_NOT_FOUND: (productId) => `Product with ID ${productId} not found`
   },
   CartMessage: {
     CART_CREATED: 'Product Successfully Added to Cart',
@@ -75,6 +76,12 @@ module.exports = {
     BAD_REQUEST: 'Invalid fields',
     TOKEN_MISSING: 'Token missing from header',
     FORBIDDEN: 'Access denied. Admins only.',
+  },
+  paymentServiceMessage: {
+    INITIALIZE_SUCCESS: 'Payment initialized successfully',
+    VERIFY_SUCCESS: 'Payment verified successfully',
+    INITIALIZED_FAILED: "Payment initialization failed",
+    VERIFY_FAILED: "Payment verification failed"
   },
   databaseMessage: {
     INVALID_ID: 'Invalid Id'
