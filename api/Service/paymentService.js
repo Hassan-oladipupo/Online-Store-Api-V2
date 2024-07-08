@@ -1,5 +1,4 @@
 const paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
-const mongoDbDataFormat = require('../helper/dbHelper');
 
 
 module.exports.initializeTransaction = async (email, amount, orderId) => {

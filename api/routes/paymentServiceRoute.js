@@ -8,7 +8,7 @@ router.post('/initialize',
     paymentServiceController.initializeTransaction
 );
 
-router.post('/verify', 
+router.post('/verify/:reference', 
     accessControlValidation.validateToken,
     paymentServiceController.verifyPayment
 );

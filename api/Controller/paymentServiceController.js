@@ -25,25 +25,26 @@ module.exports.initializeTransaction = async (req, res) => {
 };
 
 
+
 module.exports.verifyPayment = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {
     const { reference } = req.params; 
     const serviceResponse = await paymentService.verifyPayment(reference);
 
-    if (serviceResponse.data.success === true) { 
+    if (serviceResponse.data.success) {
       response.status = 200;
       response.message = constants.paymentServiceMessage.VERIFY_SUCCESS;
-      response.body = serviceResponse.data; 
+      response.body = serviceResponse.data;
     } else {
       response.status = 400;
       response.message = constants.paymentServiceMessage.VERIFY_FAILED;
-      response.body = serviceResponse.data; 
+      response.body = serviceResponse.data;
     }
   } catch (error) {
     console.log('Something went wrong: Controller: verifyPayment', error);
     response.status = 500;
     response.message = error.message;
   }
-  return res.status(response.status).send(response); 
+  return res.status(response.status).send(response);
 };
