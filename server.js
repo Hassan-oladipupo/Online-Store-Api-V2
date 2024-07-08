@@ -29,10 +29,14 @@ app.get('/', (req, res) => {
   res.send('RestApi For Online Shopping Stores');
 });
 
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`Server listening on port ${PORT}`);
+// });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 app.use((req, res, next) => {
