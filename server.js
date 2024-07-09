@@ -25,9 +25,9 @@ app.use('/api/v2/delivery-fee', require('./api/routes/deliveryFeeRoute'));
 app.use('/api/v2/payment', require('./api/routes/paymentServiceRoute'));
 
 
-app.get('/', (req, res) => {
-  res.send('RestApi For Online Shopping Stores');
-});
+// app.get('/', (req, res) => {
+//   res.send('RestApi For Online Shopping Stores');
+// });
 
 // const PORT = process.env.PORT || 3000;
 
@@ -35,11 +35,17 @@ app.get('/', (req, res) => {
 //   console.log(`Server listening on port ${PORT}`);
 // });
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Online Store REST API app listening on port ${port}`)
+})
+
+
 
 
 app.use((req, res, next) => {
