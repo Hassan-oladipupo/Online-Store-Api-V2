@@ -74,7 +74,7 @@ module.exports.retrieveAllOrders = async (req, res) =>
   module.exports.updateExitingOrder = async (req, res) => {
     let response = {...constants.customServerResponse }; 
     try {
-      const responseFromService = await orderService.updateExitingOrder({
+      const responseFromService = await orderService.updateExistingOrder({
         id: req.params.id,
         updateInfo: req.body
       });
