@@ -10,8 +10,7 @@ router.post('/register',
   userController.register
 );
 
-router.post('/confirm-email',
-  joiSchemaValidation.validateBody(userSchema.confirmEmail),
+router.post('/confirm-email/:token',
   userController.confirmToken
 );
 
