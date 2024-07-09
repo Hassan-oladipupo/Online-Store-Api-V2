@@ -53,14 +53,15 @@ module.exports.confirmToken = async (token) => {
       throw new Error(constants.userMessage.INVALID_TOKEN);
     }
 
-    if (user.isConfirmed === true) {
+    if ( user.isConfirmed === true) {
       throw new Error(constants.userMessage.EMAIL_ALREADY_CONFIRMED);
+    }else{
+      user.isConfirmed = true;
+      user.confirmToken = undefined;
+      await user.save();
+      return mongoDbDataFormat.formatMongoData(user);
     }
-    user.isConfirmed = true;
-    user.confirmToken = undefined;
-    await user.save();
-
-    return mongoDbDataFormat.formatMongoData(user);
+    
   } catch (error) {
     console.log('Something went wrong: Service:confirmToken', error);
     throw new Error(error);
