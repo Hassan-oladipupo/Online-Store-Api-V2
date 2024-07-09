@@ -22,6 +22,7 @@ app.use('/users', require('./api/routes/userRoute'));
 app.use('/carts', require('./api/routes/cartRoute'));
 app.use('/product-review', require('./api/routes/productReviewRoute'));
 app.use('/delivery-fee', require('./api/routes/deliveryFeeRoute'));
+app.use('/user-profile', require('./api/routes/userProfileRoute'));
 app.use('/payment', require('./api/routes/paymentServiceRoute'));
 
 
