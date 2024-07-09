@@ -16,13 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 
-app.use('/api/v2/products', require('./api/routes/productRoute'));
-app.use('/api/v2/orders', require('./api/routes/orderRoute'));
-app.use('/api/v2/users', require('./api/routes/userRoute'));
-app.use('/api/v2/carts', require('./api/routes/cartRoute'));
-app.use('/api/v2/product-review', require('./api/routes/productReviewRoute'));
-app.use('/api/v2/delivery-fee', require('./api/routes/deliveryFeeRoute'));
-app.use('/api/v2/payment', require('./api/routes/paymentServiceRoute'));
+app.use('/products', require('./api/routes/productRoute'));
+app.use('/orders', require('./api/routes/orderRoute'));
+app.use('/users', require('./api/routes/userRoute'));
+app.use('/carts', require('./api/routes/cartRoute'));
+app.use('/product-review', require('./api/routes/productReviewRoute'));
+app.use('/delivery-fee', require('./api/routes/deliveryFeeRoute'));
+app.use('/payment', require('./api/routes/paymentServiceRoute'));
 
 
 app.get('/', (req, res) => {
