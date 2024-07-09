@@ -1,10 +1,13 @@
 const cartService = require('../Service/cartService');
 const constants = require('../constants');
 
-module.exports.addToCart = async (req, res) => {
+ module.exports.addToCart = async (req, res) => {
   let response = { ...constants.customServerResponse };
   try {
-    const serviceResponse = await cartService.addToCart(req.body);
+    const serviceResponse = await cartService.addToCart({
+      user: req.user.id, 
+      items: req.body.items 
+    });
     response.status = 201;
     response.message = constants.CartMessage.CART_CREATED;
     response.body = serviceResponse;
@@ -14,6 +17,9 @@ module.exports.addToCart = async (req, res) => {
   }
   return res.status(response.status).send(response);
 };
+
+
+
 
 
 

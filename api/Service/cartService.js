@@ -5,9 +5,9 @@ const constants = require('../constants');
 
 module.exports.addToCart = async (serviceData) => {
   try {
-    const userId = serviceData.userId;
+    const userId = serviceData.user; 
     const items = serviceData.items;
-    
+
     const productIds = items.map(item => item.productId);
     const validProducts = await Product.find({ '_id': { $in: productIds } });
 
@@ -70,6 +70,9 @@ module.exports.addToCart = async (serviceData) => {
     throw new Error(error.message);
   }
 };
+
+
+
 
 
 
