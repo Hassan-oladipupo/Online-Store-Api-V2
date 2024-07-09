@@ -38,7 +38,7 @@ app.use('/api/v2/payment', require('./api/routes/paymentServiceRoute'));
 const port = process.env.PORT || 4000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('RestApi For Online Shopping Stores')
 })
 
 app.listen(port, () => {
