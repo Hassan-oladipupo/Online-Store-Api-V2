@@ -53,7 +53,7 @@ module.exports.confirmToken = async (token) => {
       throw new Error(constants.userMessage.INVALID_TOKEN);
     }
 
-    if (user.isConfirmed) {
+    if (user.isConfirmed === true) {
       throw new Error(constants.userMessage.EMAIL_ALREADY_CONFIRMED);
     }
     user.isConfirmed = true;
