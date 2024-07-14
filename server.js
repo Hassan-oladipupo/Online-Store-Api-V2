@@ -24,6 +24,7 @@ app.use('/product-review', require('./api/routes/productReviewRoute'));
 app.use('/delivery-fee', require('./api/routes/deliveryFeeRoute'));
 app.use('/user-profile', require('./api/routes/userProfileRoute'));
 app.use('/payment', require('./api/routes/paymentServiceRoute'));
+app.use('/wish-list', require('./api/routes/userWhistListRoute'));
 
 
 app.get('/', (req, res) => {

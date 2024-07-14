@@ -24,6 +24,16 @@ module.exports = {
      EMPTY_CART: 'No Item Found in Cart'
    
   },
+  userWhishListMessage: {
+    USER_WISHLIST_CREATED: 'Product Saved for Later Purchase',
+    USER_WISHLIST_FETCHED: 'Saved Product(s) Fetched Successfully',
+    USER_WISHLIST_EXIST: 'Product is Already Saved for Later Purchase',
+    USER_WISHLIST_REMOVED: 'Product Removed from Saved List',
+    EMPTY_USER_WISHLIST: 'You have no Saved Product',
+    USER_UNAUTHORIZED: 'Unauthorized Access to Saved products',
+    ITEM_NOT_FOUND: "Item not Found in Saved List"
+   
+  },
   orderMessage: {
     ORDER_CREATED: 'Order Placed Successfully',
     ORDER_FETCHED: 'Order(s) Fetched Successfully',
