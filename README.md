@@ -4,7 +4,7 @@ The Online-Stores-Api V2 is a comprehensive RESTful API designed to manage vario
 
 Key Features:
 
-1.Inventory Management: Manage product listings, stock levels, and product details.
+1. Inventory Management: Manage product listings, stock levels, and product details.
 
 2. Cart Operations: Handle cart creation, updates, and retrievals.
 
