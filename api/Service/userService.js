@@ -101,7 +101,8 @@ module.exports.login = async ({ email, password }) => {
       id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      profileImage: profileImage
+      profileImage: profileImage,
+      
     };
 
     const token = jwt.sign(tokenPayload, process.env.SECRET_KEY || 'my-secret-key', { expiresIn: '7d' });
