@@ -4,22 +4,22 @@ The Online-Stores-Api V2 is a comprehensive RESTful API designed to manage vario
 
 Key Features:
 
-Inventory Management: Manage product listings, stock levels, and product details.
+1.Inventory Management: Manage product listings, stock levels, and product details.
 
-Cart Operations: Handle cart creation, updates, and retrievals.
+2. Cart Operations: Handle cart creation, updates, and retrievals.
 
-Shipping Details: Manage shipping information and logistics.
+3. Shipping Details: Manage shipping information and logistics.
 
-Order Processing: Process customer orders, update order statuses, and retrieve order information.
+4. Order Processing: Process customer orders, update order statuses, and retrieve order information.
 
-User Management: Handle user profiles, authentication, and authorization.
+5. User Management: Handle user profiles, authentication, and authorization.
 
-Product Reviews: Enable customers to review products with ratings and comments.
+6. Product Reviews: Enable customers to review products with ratings and comments.
 
-User Wish List: Enable customers to save item for later purchase
+7. User Wish List: Enable customers to save item for later purchase
 
-User Profiles: Manage user information, including order history and profile details.
+8. User Profiles: Manage user information, including order history and profile details.
 
-Payment Gateway Integration: Facilitate secure payment transactions within the e-commerce platform.
+9. Payment Gateway Integration: Facilitate secure payment transactions within the e-commerce platform.
 
 The API is designed to be flexible and easy to integrate, making it a suitable choice for developers looking to build or enhance e-commerce solutions.
